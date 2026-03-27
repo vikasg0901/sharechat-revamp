@@ -10,33 +10,24 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 
-/* ===== FEED CONTAINER - Scroll Snap ===== */
-.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none}
+.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none}
 .feed::-webkit-scrollbar{display:none}
 
-/* ===== INDIVIDUAL REEL ===== */
 .reel{height:100vh;height:100dvh;width:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;background:#0a0a0a}
 .reel video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.reel .poster-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(30px) brightness(0.3);transform:scale(1.2);z-index:0}
-
-/* Gradient overlays for readability */
 .reel::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(0deg,rgba(0,0,0,0.7) 0%,transparent 30%,transparent 70%,rgba(0,0,0,0.4) 100%);pointer-events:none}
 
-/* ===== PLAY/PAUSE OVERLAY ===== */
 .play-overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .play-icon{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.8);transition:all 0.2s ease}
 .play-icon::after{content:'';width:0;height:0;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:4px}
 .reel.paused .play-icon{opacity:1;transform:scale(1)}
-.play-icon.pulse{animation:playPulse 0.4s ease}
-@keyframes playPulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0.8}100%{transform:scale(1);opacity:0}}
 
-/* ===== LOADING SKELETON ===== */
 .reel-skeleton{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:#0a0a0a}
 .skeleton-spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.1);border-top-color:#FF6B35;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .reel.loaded .reel-skeleton{display:none}
 
-/* ===== TOP NAV ===== */
+/* Top Nav */
 .top-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:env(safe-area-inset-top,12px) 16px 12px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(0,0,0,0.6),transparent);pointer-events:none}
 .top-nav>*{pointer-events:auto}
 .nav-logo{font-size:20px;font-weight:800;letter-spacing:-0.02em}
@@ -49,33 +40,104 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',system
 .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .nav-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
 
-/* ===== BOTTOM INFO ===== */
+/* Bottom Info */
 .reel-info{position:absolute;bottom:0;left:0;right:70px;z-index:10;padding:0 16px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 72px)}
 .creator{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.creator-avatar{width:36px;height:36px;border-radius:50%;border:2px solid #FF6B35;overflow:hidden;flex-shrink:0}
-.creator-avatar img{width:100%;height:100%;object-fit:cover}
+.creator-avatar{width:36px;height:36px;border-radius:50%;border:2px solid #FF6B35;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:20px}
 .creator-name{font-size:14px;font-weight:700}
-.follow-btn{padding:4px 14px;border-radius:6px;background:rgba(255,107,53,0.9);border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer;margin-left:8px;backdrop-filter:blur(10px)}
+.follow-btn{padding:4px 14px;border-radius:6px;background:rgba(255,107,53,0.9);border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer;margin-left:8px;transition:all 0.3s}
+.follow-btn.following{background:rgba(255,255,255,0.1)}
 .reel-desc{font-size:13px;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:0.9}
 .reel-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .reel-tag{padding:4px 10px;border-radius:100px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);font-size:11px;font-weight:500;white-space:nowrap}
 .reel-music{display:flex;align-items:center;gap:6px;font-size:12px;opacity:0.6}
 .music-disc{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#333,#111);border:2px solid #444;animation:spin 3s linear infinite}
 
-/* ===== SIDE ACTIONS ===== */
-.side-actions{position:absolute;right:10px;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;gap:20px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 80px)}
-.action-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* Side Actions */
+.side-actions{position:absolute;right:10px;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;gap:18px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 80px)}
+.action-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
 .action-icon{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all 0.2s ease}
 .action-icon:active{transform:scale(0.85)}
-.action-btn.liked .action-icon{background:rgba(255,50,50,0.2)}
-.action-count{font-size:11px;font-weight:500;opacity:0.8}
+.action-count{font-size:11px;font-weight:500;opacity:0.8;transition:all 0.2s}
 
-/* Like animation */
+/* Like */
+.action-btn.liked .action-icon{background:rgba(255,50,50,0.2)}
+@keyframes likeJump{0%{transform:scale(1)}25%{transform:scale(1.4)}50%{transform:scale(0.9)}75%{transform:scale(1.15)}100%{transform:scale(1)}}
+.like-anim .action-icon{animation:likeJump 0.5s ease}
+
+/* Bookmark */
+.action-btn.saved .action-icon{background:rgba(255,200,0,0.2)}
+@keyframes bookmarkPop{0%{transform:scale(1)}40%{transform:scale(1.3) rotate(-10deg)}70%{transform:scale(0.95) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+.bookmark-anim .action-icon{animation:bookmarkPop 0.4s ease}
+
+/* Share ripple */
+@keyframes shareRipple{0%{box-shadow:0 0 0 0 rgba(255,107,53,0.4)}100%{box-shadow:0 0 0 20px rgba(255,107,53,0)}}
+.share-anim .action-icon{animation:shareRipple 0.6s ease}
+
+/* Heart burst */
 .heart-burst{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .heart-burst .big-heart{font-size:100px;opacity:0;transform:scale(0.2);animation:heartBurst 0.8s ease forwards}
 @keyframes heartBurst{0%{opacity:1;transform:scale(0.2)}30%{opacity:1;transform:scale(1.1)}50%{opacity:1;transform:scale(0.95)}70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1)}}
 
-/* ===== BOTTOM NAV ===== */
+/* ===== LIVE COMMENTS OVERLAY ===== */
+.live-comments{position:absolute;bottom:0;left:0;right:70px;z-index:8;padding:0 16px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 240px);pointer-events:none;overflow:hidden;max-height:200px}
+.live-comment{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;margin-bottom:6px;border-radius:100px;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:12px;opacity:0;transform:translateY(20px);animation:commentSlide 4s ease forwards;white-space:nowrap;max-width:85%}
+.live-comment .lc-avatar{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#FF6B35,#FF3CAC);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.live-comment .lc-name{font-weight:600;color:#FF6B35;font-size:11px}
+.live-comment .lc-text{opacity:0.9}
+@keyframes commentSlide{0%{opacity:0;transform:translateY(20px)}10%{opacity:1;transform:translateY(0)}80%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-10px)}}
+
+/* ===== COMMENTS PANEL ===== */
+.comments-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);opacity:0;visibility:hidden;transition:all 0.3s ease}
+.comments-overlay.open{opacity:1;visibility:visible}
+.comments-panel{position:absolute;bottom:0;left:0;right:0;max-height:65vh;background:#1a1a1a;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);display:flex;flex-direction:column}
+.comments-overlay.open .comments-panel{transform:translateY(0)}
+.comments-handle{width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,0.2);margin:10px auto 0}
+.comments-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06)}
+.comments-header h3{font-size:15px;font-weight:700}
+.comments-close{font-size:20px;cursor:pointer;padding:4px 8px;opacity:0.5}
+.comments-list{flex:1;overflow-y:auto;padding:12px 16px;scrollbar-width:none}
+.comments-list::-webkit-scrollbar{display:none}
+.comment-item{display:flex;gap:10px;margin-bottom:16px}
+.comment-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#333,#222);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.comment-body{flex:1}
+.comment-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.comment-text{font-size:13px;line-height:1.4;opacity:0.85}
+.comment-meta{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;display:flex;gap:16px}
+.comment-meta span{cursor:pointer}
+.comment-like{display:flex;align-items:center;gap:3px;font-size:11px;color:rgba(255,255,255,0.35);cursor:pointer;transition:color 0.2s}
+.comment-like.liked-c{color:#FF6B35}
+.comments-input{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid rgba(255,255,255,0.06);background:#1a1a1a}
+.comments-input input{flex:1;background:rgba(255,255,255,0.06);border:none;border-radius:100px;padding:10px 16px;color:#fff;font-size:13px;font-family:inherit;outline:none}
+.comments-input input::placeholder{color:rgba(255,255,255,0.3)}
+.comments-send{padding:8px 16px;border-radius:100px;background:linear-gradient(135deg,#FF6B35,#FF3CAC);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.2s}
+
+/* ===== SHARE SHEET ===== */
+.share-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);opacity:0;visibility:hidden;transition:all 0.3s ease}
+.share-overlay.open{opacity:1;visibility:visible}
+.share-panel{position:absolute;bottom:0;left:0;right:0;background:#1a1a1a;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);padding:0 0 calc(env(safe-area-inset-bottom,16px) + 8px)}
+.share-overlay.open .share-panel{transform:translateY(0)}
+.share-handle{width:40px;height:4px;border-radius:4px;background:rgba(255,255,255,0.2);margin:10px auto 0}
+.share-title{padding:16px;font-size:15px;font-weight:700;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+.share-grid{display:flex;gap:4px;padding:20px 12px;overflow-x:auto;scrollbar-width:none}
+.share-grid::-webkit-scrollbar{display:none}
+.share-item{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:72px;cursor:pointer;padding:8px 4px;border-radius:12px;transition:background 0.2s}
+.share-item:active{background:rgba(255,255,255,0.05)}
+.share-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px}
+.share-icon.whatsapp{background:#25D366}
+.share-icon.telegram{background:#0088cc}
+.share-icon.instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.share-icon.twitter{background:#1DA1F2}
+.share-icon.copy-link{background:rgba(255,255,255,0.1)}
+.share-icon.more{background:rgba(255,255,255,0.1)}
+.share-label{font-size:10px;opacity:0.6;white-space:nowrap}
+.share-link{margin:0 16px 12px;display:flex;gap:8px;align-items:center}
+.share-link input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;color:#fff;font-size:12px;font-family:inherit;outline:none}
+.share-link button{padding:10px 20px;border-radius:10px;background:#FF6B35;border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.share-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(255,255,255,0.95);color:#000;padding:10px 24px;border-radius:100px;font-size:13px;font-weight:600;z-index:600;opacity:0;transition:all 0.3s ease;pointer-events:none}
+.share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;padding:8px 0 calc(env(safe-area-inset-bottom,8px) + 4px);background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.06)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 12px}
 .nav-item-icon{font-size:22px;line-height:1}
@@ -83,49 +145,69 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',system
 .nav-item.active .nav-item-label{opacity:1;color:#FF6B35}
 .create-btn{width:40px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF6B35,#FF3CAC);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(255,107,53,0.3)}
 
-/* ===== PROGRESS BAR ===== */
 .progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;z-index:15;background:rgba(255,255,255,0.1)}
 .progress-fill{height:100%;background:#FF6B35;border-radius:0 2px 2px 0;transition:width 0.3s linear;width:0}
 
-/* ===== SWIPE HINT ===== */
 .swipe-hint{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:200;padding:10px 24px;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);border-radius:100px;font-size:13px;font-weight:500;opacity:0;animation:hintShow 3s ease 1s forwards;pointer-events:none}
-@keyframes hintShow{0%{opacity:0;transform:translateX(-50%) translateY(10px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+@keyframes hintShow{0%{opacity:0;transform:translateX(-50%) translateY(10px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
 .swipe-arrow{display:inline-block;animation:swipeUp 1.5s ease infinite}
 @keyframes swipeUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* ===== RESPONSIVE ===== */
 @media(min-width:768px){
-  .feed{max-width:420px;margin:0 auto;border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05)}
+  .feed,.comments-overlay .comments-panel,.share-overlay .share-panel{max-width:420px;margin:0 auto}
+  .feed{border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05)}
   .top-nav,.bottom-nav{max-width:420px;left:50%;transform:translateX(-50%)}
-  .bottom-nav{left:50%}
 }
-
-/* Page transition */
 .reel{opacity:0.4;transition:opacity 0.3s ease}
 .reel.active{opacity:1}
 </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
 <nav class="top-nav">
   <div class="nav-logo">Share<span>Chat</span></div>
-  <div class="nav-tabs">
-    <div class="nav-tab">Following</div>
-    <div class="nav-tab active">For You</div>
-  </div>
-  <div class="nav-icons">
-    <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-  </div>
+  <div class="nav-tabs"><div class="nav-tab">Following</div><div class="nav-tab active">For You</div></div>
+  <div class="nav-icons"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
 </nav>
 
-<!-- FEED -->
 <div class="feed" id="feed"></div>
-
-<!-- SWIPE HINT -->
 <div class="swipe-hint" id="swipeHint">Swipe up for more <span class="swipe-arrow">↑</span></div>
 
-<!-- BOTTOM NAV -->
+<!-- COMMENTS PANEL -->
+<div class="comments-overlay" id="commentsOverlay">
+  <div class="comments-panel">
+    <div class="comments-handle"></div>
+    <div class="comments-header"><h3 id="commentsCount">1.2K Comments</h3><div class="comments-close" id="commentsClose">✕</div></div>
+    <div class="comments-list" id="commentsList"></div>
+    <div class="comments-input">
+      <input type="text" placeholder="Add a comment..." id="commentInput">
+      <button class="comments-send" id="commentSend">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="share-overlay" id="shareOverlay">
+  <div class="share-panel">
+    <div class="share-handle"></div>
+    <div class="share-title">Share to</div>
+    <div class="share-grid">
+      <div class="share-item" id="shareWhatsapp"><div class="share-icon whatsapp">📱</div><div class="share-label">WhatsApp</div></div>
+      <div class="share-item" id="shareTelegram"><div class="share-icon telegram">✈️</div><div class="share-label">Telegram</div></div>
+      <div class="share-item" id="shareInsta"><div class="share-icon instagram">📷</div><div class="share-label">Instagram</div></div>
+      <div class="share-item" id="shareTwitter"><div class="share-icon twitter">🐦</div><div class="share-label">Twitter</div></div>
+      <div class="share-item" id="shareCopy"><div class="share-icon copy-link">🔗</div><div class="share-label">Copy Link</div></div>
+      <div class="share-item" id="shareMore"><div class="share-icon more">•••</div><div class="share-label">More</div></div>
+    </div>
+    <div class="share-link">
+      <input type="text" value="https://sharechat.com/video/share123" readonly id="shareLinkInput">
+      <button id="shareLinkCopy">Copy</button>
+    </div>
+  </div>
+</div>
+
+<div class="share-toast" id="shareToast"></div>
+
 <nav class="bottom-nav">
   <div class="nav-item"><div class="nav-item-icon">🏠</div><div class="nav-item-label">Home</div></div>
   <div class="nav-item"><div class="nav-item-icon">🔍</div><div class="nav-item-label">Discover</div></div>
@@ -135,292 +217,260 @@ html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',system
 </nav>
 
 <script>
-// ===== VIDEO DATA =====
-const REELS = [
-  {
-    video: "https://videos.pexels.com/video-files/8810906/8810906-sd_360_640_25fps.mp4",
-    poster: "",
-    creator: { name: "DanceMaster_IN", avatar: "🕺" },
-    desc: "आज का सबसे viral dance step 🔥 Try करो और tag करो!",
-    tags: ["#DanceChallenge", "#Trending"],
-    music: "Badshah ft. Divine — Jugnu",
-    likes: "45.2K", comments: "1.2K", shares: "8.9K", saves: "2.1K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/34580609/14653369_360_640_60fps.mp4",
-    poster: "",
-    creator: { name: "NatureLover🌿", avatar: "🌅" },
-    desc: "सुबह की शांति ☮️ ऐसा नज़ारा देखकर मन को सुकून मिलता है",
-    tags: ["#Nature", "#Peaceful", "#GoodMorning"],
-    music: "Original Sound — NatureLover",
-    likes: "28.7K", comments: "892", shares: "5.4K", saves: "8.2K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/34580611/14653337_360_640_60fps.mp4",
-    poster: "",
-    creator: { name: "FoodieIndia🍛", avatar: "🍛" },
-    desc: "Street food ki duniya! 🤤 Best pani puri recipe ever",
-    tags: ["#StreetFood", "#IndianFood"],
-    music: "Trending — Street Food Beats",
-    likes: "62.1K", comments: "3.4K", shares: "12.8K", saves: "15.3K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/7102561/7102561-sd_360_640_30fps.mp4",
-    poster: "",
-    creator: { name: "ComedyKing😂", avatar: "😂" },
-    desc: "बॉस ने कहा - overtime करो 😅 मैंने कहा - WiFi ka password do pehle",
-    tags: ["#Comedy", "#FunnyMemes", "#OfficeHumor"],
-    music: "Funny Background — LOL Beats",
-    likes: "89.3K", comments: "5.7K", shares: "22.1K", saves: "4.5K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/34580612/14653343_360_640_60fps.mp4",
-    poster: "",
-    creator: { name: "TempleVibes🙏", avatar: "🛕" },
-    desc: "हर हर महादेव 🙏 काशी विश्वनाथ का अद्भुत दर्शन",
-    tags: ["#HarHarMahadev", "#Devotional", "#Kashi"],
-    music: "Om Namah Shivaya — Devotional",
-    likes: "156K", comments: "8.9K", shares: "45.2K", saves: "32.1K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/32712339/13945654_360_640_60fps.mp4",
-    poster: "",
-    creator: { name: "TravelBharat✈️", avatar: "✈️" },
-    desc: "Incredible India 🇮🇳 Rajasthan ki khubsurti dekhiye",
-    tags: ["#Travel", "#Rajasthan", "#IncredibleIndia"],
-    music: "Kesariya — Arijit Singh",
-    likes: "72.4K", comments: "2.1K", shares: "18.6K", saves: "22.7K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/8491607/8491607-sd_360_640_25fps.mp4",
-    poster: "",
-    creator: { name: "MusicVibes🎵", avatar: "🎵" },
-    desc: "Suniye ye soulful melody 🎶 Dil ko chhu lene wali awaaz",
-    tags: ["#Music", "#IndianMusic", "#Soulful"],
-    music: "Original — MusicVibes Studio",
-    likes: "34.8K", comments: "1.5K", shares: "7.3K", saves: "9.8K"
-  },
-  {
-    video: "https://videos.pexels.com/video-files/35040331/14843242_360_640_30fps.mp4",
-    poster: "",
-    creator: { name: "FitnessGuru💪", avatar: "💪" },
-    desc: "Morning workout routine 🏋️ 30 min mein fit ho jaao!",
-    tags: ["#Fitness", "#Workout", "#HealthyLife"],
-    music: "Pump It Up — Workout Mix",
-    likes: "41.5K", comments: "2.3K", shares: "9.1K", saves: "18.4K"
-  }
+// ===== SAMPLE COMMENTS DATA =====
+const SAMPLE_COMMENTS = [
+  {avatar:"🔥",name:"Rahul_K",text:"Ekdum mast! 🔥🔥🔥",time:"2m",likes:234},
+  {avatar:"🌟",name:"Priya.sharma",text:"Wow yaar kya baat hai",time:"5m",likes:189},
+  {avatar:"💃",name:"DesiQueen",text:"Too good bhai! Share karna padega 😍",time:"8m",likes:412},
+  {avatar:"🎵",name:"MusicLover99",text:"Ye gaana mere dil mein bas gaya",time:"12m",likes:67},
+  {avatar:"😂",name:"FunnyBoy",text:"Hassi nahi ruk rahi 🤣🤣",time:"15m",likes:891},
+  {avatar:"🏏",name:"CricFanatic",text:"Legend content creator hai ye!",time:"20m",likes:156},
+  {avatar:"📸",name:"PhotoWali",text:"Kitna sundar hai ye 😍",time:"25m",likes:302},
+  {avatar:"🎭",name:"ActorSahab",text:"Bhai acting class le raha hai kya? 😅",time:"30m",likes:78},
+  {avatar:"🌺",name:"FloralVibes",text:"Bhagwan ka ashirwad sabpe barse 🙏",time:"35m",likes:445},
+  {avatar:"💪",name:"GymBro",text:"Motivation milta hai aisa content dekh ke",time:"40m",likes:123},
+  {avatar:"🎨",name:"ArtistMind",text:"Creativity ki koi seema nahi hai",time:"45m",likes:56},
+  {avatar:"🍕",name:"FoodieRaj",text:"Isko dekh ke bhook lag gayi 😋",time:"1h",likes:234},
 ];
 
-// ===== FEED BUILDER =====
-const feed = document.getElementById('feed');
-let currentIndex = 0;
-let lastTap = 0;
+const LIVE_COMMENT_POOL = [
+  {name:"Amit",text:"❤️❤️❤️"},{name:"Sneha",text:"Amazing!"},{name:"Ravi",text:"Bahut accha 🔥"},
+  {name:"Pooja",text:"Love this!"},{name:"Vikram",text:"🙏🙏"},{name:"Neha",text:"Superb yaar"},
+  {name:"Arjun",text:"Share karo sabko!"},{name:"Divya",text:"Dil jeet liya 😍"},{name:"Karan",text:"OP bhai OP"},
+  {name:"Meera",text:"Goosebumps aa gaye"},{name:"Rohit",text:"🤩🤩🤩"},{name:"Anjali",text:"Keep it up!"},
+  {name:"Deepak",text:"Viral hona chahiye ye"},{name:"Simran",text:"Best content today"},{name:"Suresh",text:"Jai Ho! 🇮🇳"},
+];
 
+// ===== VIDEO DATA =====
+const REELS = [
+  {video:"https://videos.pexels.com/video-files/8810906/8810906-sd_360_640_25fps.mp4",creator:{name:"DanceMaster_IN",avatar:"🕺"},desc:"आज का सबसे viral dance step 🔥 Try करो और tag करो!",tags:["#DanceChallenge","#Trending"],music:"Badshah ft. Divine — Jugnu",likes:"45.2K",comments:"1.2K",shares:"8.9K",saves:"2.1K"},
+  {video:"https://videos.pexels.com/video-files/34580609/14653369_360_640_60fps.mp4",creator:{name:"NatureLover🌿",avatar:"🌅"},desc:"सुबह की शांति ☮️ ऐसा नज़ारा देखकर मन को सुकून मिलता है",tags:["#Nature","#GoodMorning"],music:"Original Sound — NatureLover",likes:"28.7K",comments:"892",shares:"5.4K",saves:"8.2K"},
+  {video:"https://videos.pexels.com/video-files/34580611/14653337_360_640_60fps.mp4",creator:{name:"FoodieIndia🍛",avatar:"🍛"},desc:"Street food ki duniya! 🤤 Best pani puri recipe ever",tags:["#StreetFood","#IndianFood"],music:"Trending — Street Food Beats",likes:"62.1K",comments:"3.4K",shares:"12.8K",saves:"15.3K"},
+  {video:"https://videos.pexels.com/video-files/7102561/7102561-sd_360_640_30fps.mp4",creator:{name:"ComedyKing😂",avatar:"😂"},desc:"बॉस ने कहा - overtime करो 😅 मैंने कहा - WiFi ka password do pehle",tags:["#Comedy","#FunnyMemes"],music:"Funny Background — LOL Beats",likes:"89.3K",comments:"5.7K",shares:"22.1K",saves:"4.5K"},
+  {video:"https://videos.pexels.com/video-files/34580612/14653343_360_640_60fps.mp4",creator:{name:"TempleVibes🙏",avatar:"🛕"},desc:"हर हर महादेव 🙏 काशी विश्वनाथ का अद्भुत दर्शन",tags:["#HarHarMahadev","#Devotional"],music:"Om Namah Shivaya — Devotional",likes:"156K",comments:"8.9K",shares:"45.2K",saves:"32.1K"},
+  {video:"https://videos.pexels.com/video-files/32712339/13945654_360_640_60fps.mp4",creator:{name:"TravelBharat✈️",avatar:"✈️"},desc:"Incredible India 🇮🇳 Rajasthan ki khubsurti dekhiye",tags:["#Travel","#IncredibleIndia"],music:"Kesariya — Arijit Singh",likes:"72.4K",comments:"2.1K",shares:"18.6K",saves:"22.7K"},
+  {video:"https://videos.pexels.com/video-files/8491607/8491607-sd_360_640_25fps.mp4",creator:{name:"MusicVibes🎵",avatar:"🎵"},desc:"Suniye ye soulful melody 🎶 Dil ko chhu lene wali awaaz",tags:["#Music","#Soulful"],music:"Original — MusicVibes Studio",likes:"34.8K",comments:"1.5K",shares:"7.3K",saves:"9.8K"},
+  {video:"https://videos.pexels.com/video-files/35040331/14843242_360_640_30fps.mp4",creator:{name:"FitnessGuru💪",avatar:"💪"},desc:"Morning workout routine 🏋️ 30 min mein fit ho jaao!",tags:["#Fitness","#HealthyLife"],music:"Pump It Up — Workout Mix",likes:"41.5K",comments:"2.3K",shares:"9.1K",saves:"18.4K"},
+];
+
+const feed = document.getElementById('feed');
+let currentIndex = 0, lastTap = 0, liveCommentTimers = [];
+
+// ===== BUILD REEL =====
 function createReel(data, index) {
   const reel = document.createElement('div');
   reel.className = 'reel' + (index === 0 ? ' active' : '');
   reel.dataset.index = index;
-
   reel.innerHTML = `
     <div class="reel-skeleton"><div class="skeleton-spinner"></div></div>
-    <video
-      playsinline
-      webkit-playsinline
-      loop
-      muted
-      preload="${index < 2 ? 'auto' : 'none'}"
-      ${data.poster ? `poster="${data.poster}"` : ''}
-    >
-      <source src="${data.video}" type="video/mp4">
-    </video>
-    <div class="play-overlay"></div>
+    <video playsinline webkit-playsinline loop muted preload="${index < 2 ? 'auto' : 'none'}"><source src="${data.video}" type="video/mp4"></video>
+    <div class="play-overlay"><div class="play-icon"></div></div>
     <div class="progress-bar"><div class="progress-fill"></div></div>
+    <div class="live-comments"></div>
     <div class="reel-info">
-      <div class="creator">
-        <div class="creator-avatar" style="display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:20px">${data.creator.avatar}</div>
-        <span class="creator-name">${data.creator.name}</span>
-        <button class="follow-btn">Follow</button>
-      </div>
+      <div class="creator"><div class="creator-avatar">${data.creator.avatar}</div><span class="creator-name">${data.creator.name}</span><button class="follow-btn">Follow</button></div>
       <div class="reel-desc">${data.desc}</div>
-      <div class="reel-tags">${data.tags.map(t => `<span class="reel-tag">${t}</span>`).join('')}</div>
-      <div class="reel-music"><div class="music-disc"></div> ${data.music}</div>
+      <div class="reel-tags">${data.tags.map(t=>`<span class="reel-tag">${t}</span>`).join('')}</div>
+      <div class="reel-music"><div class="music-disc"></div>${data.music}</div>
     </div>
     <div class="side-actions">
-      <div class="action-btn like-btn" data-liked="false">
-        <div class="action-icon">❤️</div>
-        <div class="action-count">${data.likes}</div>
-      </div>
-      <div class="action-btn">
-        <div class="action-icon">💬</div>
-        <div class="action-count">${data.comments}</div>
-      </div>
-      <div class="action-btn">
-        <div class="action-icon">🔄</div>
-        <div class="action-count">${data.shares}</div>
-      </div>
-      <div class="action-btn">
-        <div class="action-icon">🔖</div>
-        <div class="action-count">${data.saves}</div>
-      </div>
-      <div class="action-btn">
-        <div class="action-icon" style="font-size:16px">📤</div>
-        <div class="action-count">Share</div>
-      </div>
-    </div>
-  `;
+      <div class="action-btn like-btn" data-liked="false"><div class="action-icon">🤍</div><div class="action-count">${data.likes}</div></div>
+      <div class="action-btn comment-btn"><div class="action-icon">💬</div><div class="action-count">${data.comments}</div></div>
+      <div class="action-btn repost-btn"><div class="action-icon">🔄</div><div class="action-count">${data.shares}</div></div>
+      <div class="action-btn bookmark-btn" data-saved="false"><div class="action-icon">🔖</div><div class="action-count">${data.saves}</div></div>
+      <div class="action-btn share-btn"><div class="action-icon">📤</div><div class="action-count">Share</div></div>
+    </div>`;
 
   const video = reel.querySelector('video');
-  const skeleton = reel.querySelector('.reel-skeleton');
-  const overlay = reel.querySelector('.play-overlay');
-  const playIcon = reel.querySelector('.play-icon') || (() => {
-    const pi = document.createElement('div');
-    pi.className = 'play-icon';
-    overlay.appendChild(pi);
-    return pi;
-  })();
   const progressFill = reel.querySelector('.progress-fill');
+  const overlay = reel.querySelector('.play-overlay');
 
-  // Video loading
-  video.addEventListener('canplay', () => { reel.classList.add('loaded'); }, { once: true });
-  video.addEventListener('loadeddata', () => { reel.classList.add('loaded'); }, { once: true });
+  video.addEventListener('canplay', () => reel.classList.add('loaded'), {once:true});
+  video.addEventListener('loadeddata', () => reel.classList.add('loaded'), {once:true});
+  video.addEventListener('timeupdate', () => { if(video.duration) progressFill.style.width=(video.currentTime/video.duration*100)+'%'; });
 
-  // Progress bar
-  video.addEventListener('timeupdate', () => {
-    if (video.duration) {
-      progressFill.style.width = (video.currentTime / video.duration * 100) + '%';
-    }
-  });
-
-  // Tap to play/pause
-  overlay.addEventListener('click', (e) => {
+  // Play/Pause + Double-tap like
+  overlay.addEventListener('click', () => {
     const now = Date.now();
-    if (now - lastTap < 300) {
-      // Double tap = like
-      triggerLike(reel);
-      lastTap = 0;
-      return;
-    }
+    if(now - lastTap < 300){ triggerLike(reel); lastTap=0; return; }
     lastTap = now;
-    setTimeout(() => {
-      if (Date.now() - lastTap >= 290) {
-        togglePlay(reel, video);
-      }
-    }, 300);
+    setTimeout(() => { if(Date.now()-lastTap>=290) togglePlay(reel,video); }, 300);
   });
 
-  // Like button
+  // LIKE
   const likeBtn = reel.querySelector('.like-btn');
   likeBtn.addEventListener('click', () => {
-    const isLiked = likeBtn.dataset.liked === 'true';
-    likeBtn.dataset.liked = !isLiked;
+    const isLiked = likeBtn.dataset.liked==='true';
+    likeBtn.dataset.liked = String(!isLiked);
     likeBtn.classList.toggle('liked');
+    likeBtn.classList.add('like-anim');
+    setTimeout(()=>likeBtn.classList.remove('like-anim'),500);
     const icon = likeBtn.querySelector('.action-icon');
     icon.textContent = isLiked ? '🤍' : '❤️';
-    if (!isLiked) {
-      icon.style.transform = 'scale(1.3)';
-      setTimeout(() => icon.style.transform = '', 200);
-    }
+    if(!isLiked) triggerLike(reel);
   });
 
-  // Follow button
+  // COMMENT
+  reel.querySelector('.comment-btn').addEventListener('click', () => openComments(data));
+
+  // REPOST
+  const repostBtn = reel.querySelector('.repost-btn');
+  repostBtn.addEventListener('click', () => {
+    repostBtn.classList.add('share-anim');
+    setTimeout(()=>repostBtn.classList.remove('share-anim'),600);
+    showToast('Reposted to your profile!');
+  });
+
+  // BOOKMARK
+  const bookmarkBtn = reel.querySelector('.bookmark-btn');
+  bookmarkBtn.addEventListener('click', () => {
+    const isSaved = bookmarkBtn.dataset.saved==='true';
+    bookmarkBtn.dataset.saved = String(!isSaved);
+    bookmarkBtn.classList.toggle('saved');
+    bookmarkBtn.classList.add('bookmark-anim');
+    setTimeout(()=>bookmarkBtn.classList.remove('bookmark-anim'),400);
+    bookmarkBtn.querySelector('.action-icon').textContent = isSaved ? '🔖' : '📑';
+    showToast(isSaved ? 'Removed from saved' : 'Saved to collection');
+  });
+
+  // SHARE
+  reel.querySelector('.share-btn').addEventListener('click', () => {
+    reel.querySelector('.share-btn').classList.add('share-anim');
+    setTimeout(()=>reel.querySelector('.share-btn').classList.remove('share-anim'),600);
+    openShare(data);
+  });
+
+  // FOLLOW
   const followBtn = reel.querySelector('.follow-btn');
   followBtn.addEventListener('click', () => {
-    followBtn.textContent = 'Following';
-    followBtn.style.background = 'rgba(255,255,255,0.1)';
+    const isFollowing = followBtn.classList.contains('following');
+    followBtn.classList.toggle('following');
+    followBtn.textContent = isFollowing ? 'Follow' : 'Following';
+    if(!isFollowing) showToast('Following ' + data.creator.name);
   });
 
   return reel;
 }
 
 function togglePlay(reel, video) {
-  if (video.paused) {
-    video.play();
-    reel.classList.remove('paused');
-  } else {
-    video.pause();
-    reel.classList.add('paused');
-  }
+  if(video.paused){video.play();reel.classList.remove('paused')}
+  else{video.pause();reel.classList.add('paused')}
 }
 
 function triggerLike(reel) {
   const burst = document.createElement('div');
-  burst.className = 'heart-burst';
-  burst.innerHTML = '<span class="big-heart">❤️</span>';
+  burst.className='heart-burst';
+  burst.innerHTML='<span class="big-heart">❤️</span>';
   reel.appendChild(burst);
-  setTimeout(() => burst.remove(), 1000);
+  setTimeout(()=>burst.remove(),1000);
+  const likeBtn=reel.querySelector('.like-btn');
+  if(likeBtn.dataset.liked!=='true'){likeBtn.dataset.liked='true';likeBtn.classList.add('liked');likeBtn.querySelector('.action-icon').textContent='❤️';}
+}
 
-  const likeBtn = reel.querySelector('.like-btn');
-  if (likeBtn.dataset.liked !== 'true') {
-    likeBtn.dataset.liked = 'true';
-    likeBtn.classList.add('liked');
-    likeBtn.querySelector('.action-icon').textContent = '❤️';
+// ===== LIVE COMMENTS =====
+function startLiveComments(reel) {
+  const container = reel.querySelector('.live-comments');
+  function addComment() {
+    const c = LIVE_COMMENT_POOL[Math.floor(Math.random()*LIVE_COMMENT_POOL.length)];
+    const el = document.createElement('div');
+    el.className = 'live-comment';
+    el.innerHTML = `<div class="lc-avatar">${['🔥','⭐','💜','🌟','✨','💫','🎯'][Math.floor(Math.random()*7)]}</div><span class="lc-name">${c.name}</span><span class="lc-text">${c.text}</span>`;
+    container.appendChild(el);
+    setTimeout(()=>el.remove(),4500);
+    if(container.children.length > 3) container.firstChild.remove();
   }
+  const id = setInterval(addComment, 2000 + Math.random()*2000);
+  setTimeout(addComment, 500);
+  liveCommentTimers.push(id);
+  return id;
+}
+function stopLiveComments() { liveCommentTimers.forEach(clearInterval); liveCommentTimers=[]; }
+
+// ===== COMMENTS PANEL =====
+function openComments(data) {
+  const overlay = document.getElementById('commentsOverlay');
+  const list = document.getElementById('commentsList');
+  document.getElementById('commentsCount').textContent = data.comments + ' Comments';
+  list.innerHTML = '';
+  const shuffled = [...SAMPLE_COMMENTS].sort(()=>Math.random()-0.5);
+  shuffled.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'comment-item';
+    item.innerHTML = `<div class="comment-avatar">${c.avatar}</div><div class="comment-body"><div class="comment-name">${c.name}</div><div class="comment-text">${c.text}</div><div class="comment-meta"><span>${c.time} ago</span><span class="comment-like" onclick="this.classList.toggle('liked-c');this.textContent=this.classList.contains('liked-c')?'❤️ ${c.likes+1}':'🤍 ${c.likes}'">🤍 ${c.likes}</span><span>Reply</span></div></div>`;
+    list.appendChild(item);
+  });
+  overlay.classList.add('open');
+}
+document.getElementById('commentsClose').onclick = () => document.getElementById('commentsOverlay').classList.remove('open');
+document.getElementById('commentsOverlay').onclick = (e) => { if(e.target.id==='commentsOverlay') e.target.classList.remove('open'); };
+document.getElementById('commentSend').onclick = () => {
+  const input = document.getElementById('commentInput');
+  if(!input.value.trim()) return;
+  const list = document.getElementById('commentsList');
+  const item = document.createElement('div');
+  item.className = 'comment-item';
+  item.innerHTML = `<div class="comment-avatar">😎</div><div class="comment-body"><div class="comment-name" style="color:#FF6B35">You</div><div class="comment-text">${input.value}</div><div class="comment-meta"><span>Just now</span><span class="comment-like">🤍 0</span></div></div>`;
+  list.insertBefore(item, list.firstChild);
+  input.value = '';
+  showToast('Comment posted!');
+};
+
+// ===== SHARE SHEET =====
+function openShare(data) {
+  document.getElementById('shareOverlay').classList.add('open');
+  document.getElementById('shareLinkInput').value = 'https://sharechat.com/v/' + (data.creator.name.replace(/[^a-zA-Z]/g,'').substring(0,8));
+}
+document.getElementById('shareOverlay').onclick = (e) => { if(e.target.id==='shareOverlay') e.target.classList.remove('open'); };
+
+document.getElementById('shareWhatsapp').onclick = () => {
+  const url = document.getElementById('shareLinkInput').value;
+  const text = encodeURIComponent('Check out this amazing video on ShareChat! 🔥\n' + url);
+  window.open('https://wa.me/?text=' + text, '_blank');
+  document.getElementById('shareOverlay').classList.remove('open');
+};
+document.getElementById('shareTelegram').onclick = () => {
+  const url = document.getElementById('shareLinkInput').value;
+  window.open('https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent('Check this out on ShareChat! 🔥'), '_blank');
+  document.getElementById('shareOverlay').classList.remove('open');
+};
+document.getElementById('shareTwitter').onclick = () => {
+  const url = document.getElementById('shareLinkInput').value;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('Check this out on ShareChat! 🔥 '+ url), '_blank');
+  document.getElementById('shareOverlay').classList.remove('open');
+};
+document.getElementById('shareInsta').onclick = () => { showToast('Link copied! Paste in Instagram'); navigator.clipboard.writeText(document.getElementById('shareLinkInput').value); document.getElementById('shareOverlay').classList.remove('open'); };
+document.getElementById('shareCopy').onclick = () => { navigator.clipboard.writeText(document.getElementById('shareLinkInput').value); showToast('Link copied!'); document.getElementById('shareOverlay').classList.remove('open'); };
+document.getElementById('shareMore').onclick = () => { if(navigator.share) navigator.share({title:'ShareChat',url:document.getElementById('shareLinkInput').value}); else { navigator.clipboard.writeText(document.getElementById('shareLinkInput').value); showToast('Link copied!'); } document.getElementById('shareOverlay').classList.remove('open'); };
+document.getElementById('shareLinkCopy').onclick = () => { navigator.clipboard.writeText(document.getElementById('shareLinkInput').value); showToast('Link copied to clipboard!'); };
+
+function showToast(msg) {
+  const t = document.getElementById('shareToast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
 }
 
 // ===== BUILD FEED =====
-REELS.forEach((data, i) => {
-  feed.appendChild(createReel(data, i));
-});
+REELS.forEach((d,i) => feed.appendChild(createReel(d,i)));
 
-// ===== INTERSECTION OBSERVER for auto-play =====
+// ===== INTERSECTION OBSERVER =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    const reel = entry.target;
-    const video = reel.querySelector('video');
-    const index = parseInt(reel.dataset.index);
-
-    if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
-      // Active reel
-      reel.classList.add('active');
-      currentIndex = index;
-
-      // Lazy load this and next 2
-      [0, 1, 2].forEach(offset => {
-        const nextReel = feed.children[index + offset];
-        if (nextReel) {
-          const v = nextReel.querySelector('video');
-          if (v && v.preload === 'none') v.preload = 'auto';
-        }
-      });
-
-      // Play current
-      video.play().catch(() => {});
-      reel.classList.remove('paused');
-
-      // Hide swipe hint after first scroll
-      if (index > 0) {
-        document.getElementById('swipeHint').style.display = 'none';
-      }
-    } else {
-      reel.classList.remove('active');
-      video.pause();
-      video.currentTime = 0;
-    }
+    const reel = entry.target, video = reel.querySelector('video'), index = parseInt(reel.dataset.index);
+    if(entry.isIntersecting && entry.intersectionRatio > 0.7){
+      reel.classList.add('active'); currentIndex = index;
+      [0,1,2].forEach(o=>{const r=feed.children[index+o];if(r){const v=r.querySelector('video');if(v&&v.preload==='none')v.preload='auto';}});
+      video.play().catch(()=>{});reel.classList.remove('paused');
+      stopLiveComments(); startLiveComments(reel);
+      if(index>0) document.getElementById('swipeHint').style.display='none';
+    } else { reel.classList.remove('active'); video.pause(); video.currentTime=0; }
   });
-}, { threshold: [0.7] });
+}, {threshold:[0.7]});
+document.querySelectorAll('.reel').forEach(r=>observer.observe(r));
 
-document.querySelectorAll('.reel').forEach(reel => observer.observe(reel));
+document.addEventListener('touchstart',()=>{const v=document.querySelector('.reel video');if(v)v.play().catch(()=>{});},{once:true});
+document.addEventListener('click',()=>{const v=document.querySelector('.reel.active video');if(v&&v.paused)v.play().catch(()=>{});},{once:true});
 
-// Auto-play first video (needs user interaction on mobile)
-document.addEventListener('touchstart', () => {
-  const firstVideo = document.querySelector('.reel video');
-  if (firstVideo) firstVideo.play().catch(() => {});
-}, { once: true });
-
-document.addEventListener('click', () => {
-  const firstVideo = document.querySelector('.reel.active video');
-  if (firstVideo && firstVideo.paused) firstVideo.play().catch(() => {});
-}, { once: true });
-
-// ===== PERFORMANCE: Pause off-screen videos =====
-setInterval(() => {
-  document.querySelectorAll('.reel').forEach((reel, i) => {
-    const video = reel.querySelector('video');
-    if (Math.abs(i - currentIndex) > 1 && !video.paused) {
-      video.pause();
-    }
-  });
-}, 1000);
+setInterval(()=>{document.querySelectorAll('.reel').forEach((r,i)=>{const v=r.querySelector('video');if(Math.abs(i-currentIndex)>1&&!v.paused)v.pause();});},1000);
 </script>
 </body>
 </html>
