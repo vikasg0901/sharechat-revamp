@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ShareChat — Feed Reimagined</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#000;font-family:'Inter',system-ui,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+
+/* ===== FEED CONTAINER - Scroll Snap ===== */
+.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none}
+.feed::-webkit-scrollbar{display:none}
+
+/* ===== INDIVIDUAL REEL ===== */
+.reel{height:100vh;height:100dvh;width:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;background:#0a0a0a}
+.reel video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.reel .poster-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(30px) brightness(0.3);transform:scale(1.2);z-index:0}
+
+/* Gradient overlays for readability */
+.reel::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(0deg,rgba(0,0,0,0.7) 0%,transparent 30%,transparent 70%,rgba(0,0,0,0.4) 100%);pointer-events:none}
+
+/* ===== PLAY/PAUSE OVERLAY ===== */
+.play-overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.play-icon{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.8);transition:all 0.2s ease}
+.play-icon::after{content:'';width:0;height:0;border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:4px}
+.reel.paused .play-icon{opacity:1;transform:scale(1)}
+.play-icon.pulse{animation:playPulse 0.4s ease}
+@keyframes playPulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0.8}100%{transform:scale(1);opacity:0}}
+
+/* ===== LOADING SKELETON ===== */
+.reel-skeleton{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:#0a0a0a}
+.skeleton-spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.1);border-top-color:#FF6B35;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reel.loaded .reel-skeleton{display:none}
+
+/* ===== TOP NAV ===== */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:env(safe-area-inset-top,12px) 16px 12px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(0,0,0,0.6),transparent);pointer-events:none}
+.top-nav>*{pointer-events:auto}
+.nav-logo{font-size:20px;font-weight:800;letter-spacing:-0.02em}
+.nav-logo span{color:#FF6B35}
+.nav-tabs{display:flex;gap:20px;font-size:14px;font-weight:500}
+.nav-tab{opacity:0.5;cursor:pointer;transition:opacity 0.2s;position:relative}
+.nav-tab.active{opacity:1}
+.nav-tab.active::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;background:#FF6B35;border-radius:2px}
+.nav-icons{display:flex;gap:16px;align-items:center}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+
+/* ===== BOTTOM INFO ===== */
+.reel-info{position:absolute;bottom:0;left:0;right:70px;z-index:10;padding:0 16px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 72px)}
+.creator{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.creator-avatar{width:36px;height:36px;border-radius:50%;border:2px solid #FF6B35;overflow:hidden;flex-shrink:0}
+.creator-avatar img{width:100%;height:100%;object-fit:cover}
+.creator-name{font-size:14px;font-weight:700}
+.follow-btn{padding:4px 14px;border-radius:6px;background:rgba(255,107,53,0.9);border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer;margin-left:8px;backdrop-filter:blur(10px)}
+.reel-desc{font-size:13px;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:0.9}
+.reel-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.reel-tag{padding:4px 10px;border-radius:100px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);font-size:11px;font-weight:500;white-space:nowrap}
+.reel-music{display:flex;align-items:center;gap:6px;font-size:12px;opacity:0.6}
+.music-disc{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#333,#111);border:2px solid #444;animation:spin 3s linear infinite}
+
+/* ===== SIDE ACTIONS ===== */
+.side-actions{position:absolute;right:10px;bottom:0;z-index:10;display:flex;flex-direction:column;align-items:center;gap:20px;padding-bottom:calc(env(safe-area-inset-bottom,16px) + 80px)}
+.action-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.action-icon{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all 0.2s ease}
+.action-icon:active{transform:scale(0.85)}
+.action-btn.liked .action-icon{background:rgba(255,50,50,0.2)}
+.action-count{font-size:11px;font-weight:500;opacity:0.8}
+
+/* Like animation */
+.heart-burst{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.heart-burst .big-heart{font-size:100px;opacity:0;transform:scale(0.2);animation:heartBurst 0.8s ease forwards}
+@keyframes heartBurst{0%{opacity:1;transform:scale(0.2)}30%{opacity:1;transform:scale(1.1)}50%{opacity:1;transform:scale(0.95)}70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1)}}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;padding:8px 0 calc(env(safe-area-inset-bottom,8px) + 4px);background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.06)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 12px}
+.nav-item-icon{font-size:22px;line-height:1}
+.nav-item-label{font-size:9px;font-weight:500;opacity:0.5}
+.nav-item.active .nav-item-label{opacity:1;color:#FF6B35}
+.create-btn{width:40px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF6B35,#FF3CAC);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(255,107,53,0.3)}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;z-index:15;background:rgba(255,255,255,0.1)}
+.progress-fill{height:100%;background:#FF6B35;border-radius:0 2px 2px 0;transition:width 0.3s linear;width:0}
+
+/* ===== SWIPE HINT ===== */
+.swipe-hint{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:200;padding:10px 24px;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);border-radius:100px;font-size:13px;font-weight:500;opacity:0;animation:hintShow 3s ease 1s forwards;pointer-events:none}
+@keyframes hintShow{0%{opacity:0;transform:translateX(-50%) translateY(10px)}10%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
+.swipe-arrow{display:inline-block;animation:swipeUp 1.5s ease infinite}
+@keyframes swipeUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ===== RESPONSIVE ===== */
+@media(min-width:768px){
+  .feed{max-width:420px;margin:0 auto;border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05)}
+  .top-nav,.bottom-nav{max-width:420px;left:50%;transform:translateX(-50%)}
+  .bottom-nav{left:50%}
+}
+
+/* Page transition */
+.reel{opacity:0.4;transition:opacity 0.3s ease}
+.reel.active{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">Share<span>Chat</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab">Following</div>
+    <div class="nav-tab active">For You</div>
+  </div>
+  <div class="nav-icons">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+  </div>
+</nav>
+
+<!-- FEED -->
+<div class="feed" id="feed"></div>
+
+<!-- SWIPE HINT -->
+<div class="swipe-hint" id="swipeHint">Swipe up for more <span class="swipe-arrow">↑</span></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="nav-item"><div class="nav-item-icon">🏠</div><div class="nav-item-label">Home</div></div>
+  <div class="nav-item"><div class="nav-item-icon">🔍</div><div class="nav-item-label">Discover</div></div>
+  <div class="nav-item"><div class="create-btn">+</div><div class="nav-item-label" style="opacity:0.5">Create</div></div>
+  <div class="nav-item"><div class="nav-item-icon">💬</div><div class="nav-item-label">Inbox</div></div>
+  <div class="nav-item active"><div class="nav-item-icon">👤</div><div class="nav-item-label">Profile</div></div>
+</nav>
+
+<script>
+// ===== VIDEO DATA =====
+const REELS = [
+  {
+    video: "https://cdn.pixabay.com/video/2024/08/01/223972_large.mp4",
+    poster: "",
+    creator: { name: "DanceMaster_IN", avatar: "🕺" },
+    desc: "आज का सबसे viral dance step 🔥 Try करो और tag करो!",
+    tags: ["#DanceChallenge", "#Trending"],
+    music: "Badshah ft. Divine — Jugnu",
+    likes: "45.2K", comments: "1.2K", shares: "8.9K", saves: "2.1K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2020/07/30/45767-446808356_large.mp4",
+    poster: "",
+    creator: { name: "NatureLover🌿", avatar: "🌅" },
+    desc: "सुबह की शांति ☮️ ऐसा नज़ारा देखकर मन को सुकून मिलता है",
+    tags: ["#Nature", "#Peaceful", "#GoodMorning"],
+    music: "Original Sound — NatureLover",
+    likes: "28.7K", comments: "892", shares: "5.4K", saves: "8.2K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2021/04/03/69657-532083498_large.mp4",
+    poster: "",
+    creator: { name: "FoodieIndia🍛", avatar: "🍛" },
+    desc: "Street food ki duniya! 🤤 Best pani puri recipe ever",
+    tags: ["#StreetFood", "#IndianFood"],
+    music: "Trending — Street Food Beats",
+    likes: "62.1K", comments: "3.4K", shares: "12.8K", saves: "15.3K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2023/10/09/184414-873032466_large.mp4",
+    poster: "",
+    creator: { name: "ComedyKing😂", avatar: "😂" },
+    desc: "बॉस ने कहा - overtime करो 😅 मैंने कहा - WiFi ka password do pehle",
+    tags: ["#Comedy", "#FunnyMemes", "#OfficeHumor"],
+    music: "Funny Background — LOL Beats",
+    likes: "89.3K", comments: "5.7K", shares: "22.1K", saves: "4.5K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2024/02/11/200256-912148498_large.mp4",
+    poster: "",
+    creator: { name: "TempleVibes🙏", avatar: "🛕" },
+    desc: "हर हर महादेव 🙏 काशी विश्वनाथ का अद्भुत दर्शन",
+    tags: ["#HarHarMahadev", "#Devotional", "#Kashi"],
+    music: "Om Namah Shivaya — Devotional",
+    likes: "156K", comments: "8.9K", shares: "45.2K", saves: "32.1K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2020/05/25/39778-424930080_large.mp4",
+    poster: "",
+    creator: { name: "TravelBharat✈️", avatar: "✈️" },
+    desc: "Incredible India 🇮🇳 Rajasthan ki khubsurti dekhiye",
+    tags: ["#Travel", "#Rajasthan", "#IncredibleIndia"],
+    music: "Kesariya — Arijit Singh",
+    likes: "72.4K", comments: "2.1K", shares: "18.6K", saves: "22.7K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2021/10/10/91488-627946412_large.mp4",
+    poster: "",
+    creator: { name: "MusicVibes🎵", avatar: "🎵" },
+    desc: "Suniye ye soulful melody 🎶 Dil ko chhu lene wali awaaz",
+    tags: ["#Music", "#IndianMusic", "#Soulful"],
+    music: "Original — MusicVibes Studio",
+    likes: "34.8K", comments: "1.5K", shares: "7.3K", saves: "9.8K"
+  },
+  {
+    video: "https://cdn.pixabay.com/video/2023/06/12/167248-836082510_large.mp4",
+    poster: "",
+    creator: { name: "FitnessGuru💪", avatar: "💪" },
+    desc: "Morning workout routine 🏋️ 30 min mein fit ho jaao!",
+    tags: ["#Fitness", "#Workout", "#HealthyLife"],
+    music: "Pump It Up — Workout Mix",
+    likes: "41.5K", comments: "2.3K", shares: "9.1K", saves: "18.4K"
+  }
+];
+
+// ===== FEED BUILDER =====
+const feed = document.getElementById('feed');
+let currentIndex = 0;
+let lastTap = 0;
+
+function createReel(data, index) {
+  const reel = document.createElement('div');
+  reel.className = 'reel' + (index === 0 ? ' active' : '');
+  reel.dataset.index = index;
+
+  reel.innerHTML = `
+    <div class="reel-skeleton"><div class="skeleton-spinner"></div></div>
+    <video
+      playsinline
+      webkit-playsinline
+      loop
+      muted
+      preload="${index < 2 ? 'auto' : 'none'}"
+      ${data.poster ? `poster="${data.poster}"` : ''}
+    >
+      <source src="${data.video}" type="video/mp4">
+    </video>
+    <div class="play-overlay"></div>
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+    <div class="reel-info">
+      <div class="creator">
+        <div class="creator-avatar" style="display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:20px">${data.creator.avatar}</div>
+        <span class="creator-name">${data.creator.name}</span>
+        <button class="follow-btn">Follow</button>
+      </div>
+      <div class="reel-desc">${data.desc}</div>
+      <div class="reel-tags">${data.tags.map(t => `<span class="reel-tag">${t}</span>`).join('')}</div>
+      <div class="reel-music"><div class="music-disc"></div> ${data.music}</div>
+    </div>
+    <div class="side-actions">
+      <div class="action-btn like-btn" data-liked="false">
+        <div class="action-icon">❤️</div>
+        <div class="action-count">${data.likes}</div>
+      </div>
+      <div class="action-btn">
+        <div class="action-icon">💬</div>
+        <div class="action-count">${data.comments}</div>
+      </div>
+      <div class="action-btn">
+        <div class="action-icon">🔄</div>
+        <div class="action-count">${data.shares}</div>
+      </div>
+      <div class="action-btn">
+        <div class="action-icon">🔖</div>
+        <div class="action-count">${data.saves}</div>
+      </div>
+      <div class="action-btn">
+        <div class="action-icon" style="font-size:16px">📤</div>
+        <div class="action-count">Share</div>
+      </div>
+    </div>
+  `;
+
+  const video = reel.querySelector('video');
+  const skeleton = reel.querySelector('.reel-skeleton');
+  const overlay = reel.querySelector('.play-overlay');
+  const playIcon = reel.querySelector('.play-icon') || (() => {
+    const pi = document.createElement('div');
+    pi.className = 'play-icon';
+    overlay.appendChild(pi);
+    return pi;
+  })();
+  const progressFill = reel.querySelector('.progress-fill');
+
+  // Video loading
+  video.addEventListener('canplay', () => { reel.classList.add('loaded'); }, { once: true });
+  video.addEventListener('loadeddata', () => { reel.classList.add('loaded'); }, { once: true });
+
+  // Progress bar
+  video.addEventListener('timeupdate', () => {
+    if (video.duration) {
+      progressFill.style.width = (video.currentTime / video.duration * 100) + '%';
+    }
+  });
+
+  // Tap to play/pause
+  overlay.addEventListener('click', (e) => {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      // Double tap = like
+      triggerLike(reel);
+      lastTap = 0;
+      return;
+    }
+    lastTap = now;
+    setTimeout(() => {
+      if (Date.now() - lastTap >= 290) {
+        togglePlay(reel, video);
+      }
+    }, 300);
+  });
+
+  // Like button
+  const likeBtn = reel.querySelector('.like-btn');
+  likeBtn.addEventListener('click', () => {
+    const isLiked = likeBtn.dataset.liked === 'true';
+    likeBtn.dataset.liked = !isLiked;
+    likeBtn.classList.toggle('liked');
+    const icon = likeBtn.querySelector('.action-icon');
+    icon.textContent = isLiked ? '🤍' : '❤️';
+    if (!isLiked) {
+      icon.style.transform = 'scale(1.3)';
+      setTimeout(() => icon.style.transform = '', 200);
+    }
+  });
+
+  // Follow button
+  const followBtn = reel.querySelector('.follow-btn');
+  followBtn.addEventListener('click', () => {
+    followBtn.textContent = 'Following';
+    followBtn.style.background = 'rgba(255,255,255,0.1)';
+  });
+
+  return reel;
+}
+
+function togglePlay(reel, video) {
+  if (video.paused) {
+    video.play();
+    reel.classList.remove('paused');
+  } else {
+    video.pause();
+    reel.classList.add('paused');
+  }
+}
+
+function triggerLike(reel) {
+  const burst = document.createElement('div');
+  burst.className = 'heart-burst';
+  burst.innerHTML = '<span class="big-heart">❤️</span>';
+  reel.appendChild(burst);
+  setTimeout(() => burst.remove(), 1000);
+
+  const likeBtn = reel.querySelector('.like-btn');
+  if (likeBtn.dataset.liked !== 'true') {
+    likeBtn.dataset.liked = 'true';
+    likeBtn.classList.add('liked');
+    likeBtn.querySelector('.action-icon').textContent = '❤️';
+  }
+}
+
+// ===== BUILD FEED =====
+REELS.forEach((data, i) => {
+  feed.appendChild(createReel(data, i));
+});
+
+// ===== INTERSECTION OBSERVER for auto-play =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const reel = entry.target;
+    const video = reel.querySelector('video');
+    const index = parseInt(reel.dataset.index);
+
+    if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+      // Active reel
+      reel.classList.add('active');
+      currentIndex = index;
+
+      // Lazy load this and next 2
+      [0, 1, 2].forEach(offset => {
+        const nextReel = feed.children[index + offset];
+        if (nextReel) {
+          const v = nextReel.querySelector('video');
+          if (v && v.preload === 'none') v.preload = 'auto';
+        }
+      });
+
+      // Play current
+      video.play().catch(() => {});
+      reel.classList.remove('paused');
+
+      // Hide swipe hint after first scroll
+      if (index > 0) {
+        document.getElementById('swipeHint').style.display = 'none';
+      }
+    } else {
+      reel.classList.remove('active');
+      video.pause();
+      video.currentTime = 0;
+    }
+  });
+}, { threshold: [0.7] });
+
+document.querySelectorAll('.reel').forEach(reel => observer.observe(reel));
+
+// Auto-play first video (needs user interaction on mobile)
+document.addEventListener('touchstart', () => {
+  const firstVideo = document.querySelector('.reel video');
+  if (firstVideo) firstVideo.play().catch(() => {});
+}, { once: true });
+
+document.addEventListener('click', () => {
+  const firstVideo = document.querySelector('.reel.active video');
+  if (firstVideo && firstVideo.paused) firstVideo.play().catch(() => {});
+}, { once: true });
+
+// ===== PERFORMANCE: Pause off-screen videos =====
+setInterval(() => {
+  document.querySelectorAll('.reel').forEach((reel, i) => {
+    const video = reel.querySelector('video');
+    if (Math.abs(i - currentIndex) > 1 && !video.paused) {
+      video.pause();
+    }
+  });
+}, 1000);
+</script>
+</body>
+</html>
