@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShareChat — Reimagined</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --bg-glass: rgba(255,255,255,0.06);
+  --border-glass: rgba(255,255,255,0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255,255,255,0.6);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --accent: #FF6B35;
+  --accent-glow: rgba(255,107,53,0.3);
+  --gradient-1: linear-gradient(135deg, #FF6B35, #FF3CAC);
+  --gradient-2: linear-gradient(135deg, #FF3CAC, #784BA0, #2B86C5);
+  --gradient-3: linear-gradient(135deg, #00F5A0, #00D9F5);
+  --gradient-gold: linear-gradient(135deg, #F7971E, #FFD200);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
+/* ==================== HERO SECTION ==================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.15), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(120,75,160,0.12), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 10% 60%, rgba(43,134,197,0.1), transparent 50%);
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 900px; padding: 0 24px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 20px; border-radius: 100px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  font-size: 13px; font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  backdrop-filter: blur(20px);
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  animation: pulse 2s ease infinite;
+}
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero h1 .gradient-text {
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 18px; line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 560px; margin: 0 auto 48px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+.hero-cta {
+  display: flex; gap: 16px;
+  justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+.btn-primary {
+  padding: 16px 36px; border-radius: 100px; border: none;
+  background: var(--gradient-1);
+  color: white; font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 8px 32px rgba(255,107,53,0.25);
+  font-family: 'Inter', sans-serif;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,53,0.35); }
+.btn-secondary {
+  padding: 16px 36px; border-radius: 100px;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-glass);
+  color: white; font-size: 15px; font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
+  font-family: 'Inter', sans-serif;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+/* Stats bar */
+.hero-stats {
+  display: flex; justify-content: center; gap: 48px;
+  margin-top: 80px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+.stat { text-align: center; }
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px; font-weight: 700;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat-label { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ==================== PHONE MOCKUP SECTION ==================== */
+.phone-section {
+  padding: 120px 24px;
+  position: relative;
+}
+.phone-section .section-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+.section-tag {
+  display: inline-block;
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.section-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Phone Container */
+.phone-showcase {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+.phone-frame {
+  width: 320px;
+  height: 640px;
+  border-radius: 40px;
+  background: #0a0a0a;
+  border: 2px solid rgba(255,255,255,0.1);
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 120px rgba(255,107,53,0.05);
+  flex-shrink: 0;
+  transform: rotateY(-5deg);
+  transition: transform 0.5s ease;
+}
+.phone-frame:hover { transform: rotateY(0deg) scale(1.02); }
+.phone-frame:nth-child(2) { transform: rotateY(0deg) scale(1.05); z-index: 2;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 60px 120px rgba(0,0,0,0.6), 0 0 160px rgba(255,107,53,0.08); }
+.phone-frame:nth-child(2):hover { transform: rotateY(0deg) scale(1.07); }
+.phone-frame:nth-child(3) { transform: rotateY(5deg); }
+.phone-frame:nth-child(3):hover { transform: rotateY(0deg) scale(1.02); }
+
+/* Phone Notch */
+.phone-notch {
+  position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 28px;
+  background: #0a0a0a;
+  border-radius: 0 0 20px 20px;
+  z-index: 10;
+}
+
+/* ==================== FEED SCREEN ==================== */
+.feed-screen {
+  width: 100%; height: 100%;
+  background: var(--bg-primary);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+.feed-header {
+  position: sticky; top: 0; z-index: 5;
+  padding: 36px 16px 12px;
+  background: linear-gradient(to bottom, var(--bg-primary) 60%, transparent);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.feed-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 700;
+}
+.feed-logo span { color: var(--accent); }
+.feed-icons { display: flex; gap: 16px; }
+.feed-icon {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  position: relative;
+}
+.feed-icon.notif::after {
+  content: ''; position: absolute;
+  top: -1px; right: -1px;
+  width: 7px; height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* Stories Bar */
+.stories-bar {
+  display: flex; gap: 12px;
+  padding: 8px 16px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.stories-bar::-webkit-scrollbar { display: none; }
+.story-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+.story-ring {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  padding: 2px;
+  background: var(--gradient-1);
+}
+.story-ring.add { background: var(--bg-glass); border: 1.5px dashed rgba(255,255,255,0.2); padding: 0; display: flex; align-items: center; justify-content: center; }
+.story-avatar {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--bg-primary);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.story-name { font-size: 10px; color: var(--text-tertiary); max-width: 56px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Feed Post */
+.feed-post {
+  padding: 0 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  margin-bottom: 16px;
+}
+.post-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+.post-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gradient-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.post-info { flex: 1; }
+.post-name { font-size: 13px; font-weight: 600; }
+.post-time { font-size: 11px; color: var(--text-tertiary); }
+.post-follow {
+  font-size: 12px; font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 14px;
+  border-radius: 100px;
+  background: transparent;
+}
+.post-media {
+  width: 100%; aspect-ratio: 4/5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 12px;
+}
+.post-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.post-gradient {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+.post-play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.post-play::after {
+  content: '';
+  width: 0; height: 0;
+  border-left: 14px solid white;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  margin-left: 3px;
+}
+.post-tag {
+  position: absolute; bottom: 12px; left: 12px;
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+}
+.post-actions {
+  display: flex; align-items: center; gap: 20px;
+}
+.post-action {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.post-action svg { width: 20px; height: 20px; }
+
+/* ==================== REELS SCREEN ==================== */
+.reels-screen {
+  width: 100%; height: 100%;
+  background: black;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+.reels-screen::-webkit-scrollbar { display: none; }
+.reel-item {
+  width: 100%; height: 100%;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+.reel-bg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.reel-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(transparent 40%, rgba(0,0,0,0.8));
+}
+.reel-content {
+  position: absolute; bottom: 80px; left: 16px; right: 60px;
+}
+.reel-creator {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.reel-creator-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--gradient-1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.reel-creator-name { font-size: 13px; font-weight: 600; }
+.reel-creator .follow-btn {
+  font-size: 11px; padding: 3px 10px;
+  border: 1px solid white; border-radius: 100px;
+  background: transparent; color: white;
+  margin-left: 8px;
+}
+.reel-desc { font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
+.reel-music {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--text-secondary);
+}
+.reel-music .music-note { animation: spin 3s linear infinite; }
+.reel-sidebar {
+  position: absolute; right: 12px; bottom: 100px;
+  display: flex; flex-direction: column; gap: 20px;
+  align-items: center;
+}
+.reel-sidebar-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.reel-sidebar-btn .icon-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.reel-sidebar-btn .count { font-size: 10px; color: rgba(255,255,255,0.7); }
+.reel-progress {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: rgba(255,255,255,0.15);
+}
+.reel-progress-bar {
+  height: 100%; background: white; border-radius: 2px;
+  animation: progress 8s linear infinite;
+}
+
+/* ==================== DISCOVER SCREEN ==================== */
+.discover-screen {
+  width: 100%; height: 100%;
+  background: var(--bg-primary);
+  overflow-y: auto;
+  padding-top: 40px;
+}
+.discover-search {
+  margin: 0 16px 20px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--text-tertiary);
+}
+.discover-chips {
+  display: flex; gap: 8px;
+  padding: 0 16px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.discover-chips::-webkit-scrollbar { display: none; }
+.chip {
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px; font-weight: 500;
+  white-space: nowrap;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+}
+.chip.active { background: var(--gradient-1); border-color: transparent; color: white; }
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 0 2px;
+}
+.discover-item {
+  aspect-ratio: 9/12;
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.discover-item.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+  border-radius: 4px;
+}
+.discover-item-bg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.discover-item-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 8px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+.discover-item-views {
+  font-size: 10px; color: rgba(255,255,255,0.8);
+  display: flex; align-items: center; gap: 3px;
+}
+
+/* ==================== FEATURES SECTION ==================== */
+.features-section {
+  padding: 120px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 64px;
+}
+.feature-card {
+  padding: 40px 32px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.feature-card:hover {
+  border-color: rgba(255,107,53,0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--gradient-1);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  background: rgba(255,107,53,0.1);
+}
+.feature-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 600;
+  margin-bottom: 12px;
+}
+.feature-desc {
+  font-size: 14px; line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* ==================== COMPARISON SECTION ==================== */
+.comparison-section {
+  padding: 120px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.comparison-table {
+  margin-top: 64px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+.comparison-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid var(--border-glass);
+}
+.comparison-row:last-child { border-bottom: none; }
+.comparison-row.header {
+  background: var(--bg-glass);
+}
+.comparison-cell {
+  padding: 16px 24px;
+  font-size: 14px;
+  display: flex; align-items: center;
+}
+.comparison-cell.header-cell {
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+.comparison-cell.feature-name { color: var(--text-secondary); }
+.comparison-cell .check { color: #22c55e; font-size: 18px; }
+.comparison-cell .cross { color: rgba(255,255,255,0.15); font-size: 18px; }
+.comparison-cell .new-badge {
+  background: var(--gradient-1);
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 100px;
+  margin-left: 8px;
+}
+
+/* ==================== IMPACT SECTION ==================== */
+.impact-section {
+  padding: 120px 24px;
+  text-align: center;
+  position: relative;
+}
+.impact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(255,107,53,0.08), transparent);
+}
+.impact-metrics {
+  display: flex; justify-content: center; gap: 64px; flex-wrap: wrap;
+  margin-top: 64px;
+  position: relative;
+}
+.impact-metric {
+  text-align: center;
+}
+.impact-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 56px; font-weight: 700;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.impact-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.impact-sublabel {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* ==================== CTA SECTION ==================== */
+.cta-section {
+  padding: 120px 24px;
+  text-align: center;
+}
+.cta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 48px;
+  border-radius: var(--radius-xl);
+  background: var(--gradient-1);
+  position: relative;
+  overflow: hidden;
+}
+.cta-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.2), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,0,0,0.2), transparent 40%);
+}
+.cta-card h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  position: relative;
+  margin-bottom: 16px;
+}
+.cta-card p {
+  font-size: 16px;
+  opacity: 0.85;
+  position: relative;
+  margin-bottom: 40px;
+  max-width: 480px;
+  margin-left: auto; margin-right: auto;
+}
+.btn-white {
+  padding: 16px 40px;
+  border-radius: 100px;
+  border: none;
+  background: white;
+  color: #0a0a0a;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  font-family: 'Inter', sans-serif;
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+
+/* ==================== NAV ==================== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+}
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo .logo-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--gradient-1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800;
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-link {
+  font-size: 14px; color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.active { color: var(--text-primary); font-weight: 500; }
+
+/* ==================== BEFORE/AFTER ==================== */
+.before-after-section {
+  padding: 120px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.ba-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 64px;
+}
+.ba-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+.ba-card.before { opacity: 0.6; }
+.ba-card-header {
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-glass);
+  border-bottom: 1px solid var(--border-glass);
+}
+.ba-label {
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.ba-label.old { color: var(--text-tertiary); }
+.ba-label.new { color: var(--accent); }
+.ba-content {
+  padding: 24px;
+  background: var(--bg-card);
+}
+.ba-mockup {
+  aspect-ratio: 9/16;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.ba-mockup.old-design {
+  background: #f5f5f5;
+  display: flex; flex-direction: column;
+  padding: 8px;
+}
+.ba-old-header {
+  background: #FF6B35;
+  color: white;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ba-old-content {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+.ba-old-post {
+  background: #f8f8f8;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  padding: 8px;
+  flex: 1;
+}
+.ba-old-tag {
+  display: inline-block;
+  background: #e0e0e0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  color: #666;
+  margin-bottom: 4px;
+}
+.ba-old-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #ddd, #ccc);
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.ba-old-actions {
+  display: flex; gap: 12px;
+  font-size: 9px; color: #999;
+}
+.ba-old-nav {
+  display: flex; justify-content: space-around;
+  padding: 10px;
+  background: white;
+  border-top: 1px solid #eee;
+  font-size: 8px; color: #999;
+}
+
+.ba-mockup.new-design {
+  background: var(--bg-primary);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.ba-mockup.new-design::-webkit-scrollbar { display: none; }
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.floating { animation: float 6s ease-in-out infinite; }
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .phone-showcase { flex-direction: column; align-items: center; }
+  .phone-frame { transform: none !important; }
+  .hero-stats { gap: 24px; }
+  .stat-value { font-size: 28px; }
+  .comparison-row { grid-template-columns: 1.5fr 1fr 1fr; }
+  .comparison-cell { padding: 12px 16px; font-size: 12px; }
+  .nav-links { display: none; }
+  .ba-container { grid-template-columns: 1fr; }
+  .impact-metrics { gap: 32px; }
+}
+
+/* Gradient accent borders for cards */
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-1);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.glow-border:hover::after { opacity: 1; }
+
+/* Color swatch strip */
+.color-strip {
+  display: flex; gap: 4px; margin-top: 12px;
+}
+.color-dot {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="logo-icon">S</div>
+    ShareChat
+  </div>
+  <div class="nav-links">
+    <a href="#vision" class="nav-link active">Vision</a>
+    <a href="#experience" class="nav-link">Experience</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#impact" class="nav-link">Impact</a>
+  </div>
+  <button class="btn-primary" style="padding: 10px 24px; font-size: 13px;">Let's Build This</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="vision">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      UX Revamp Proposal — March 2026
+    </div>
+    <h1>India's Voice.<br><span class="gradient-text">World's Stage.</span></h1>
+    <p>ShareChat has 325M+ hearts. Now it's time to give them a world-class stage — one that makes creators stay, users obsess, and competitors notice.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('experience').scrollIntoView({behavior:'smooth'})">See the Vision ↓</button>
+      <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">View Features</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">325M+</div>
+        <div class="stat-label">Monthly Users</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">80M</div>
+        <div class="stat-label">Creators</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2.5B</div>
+        <div class="stat-label">Monthly Shares</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">15+</div>
+        <div class="stat-label">Languages</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="before-after-section" id="experience">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-tag">Before → After</div>
+    <h2 class="section-title">From Functional to <span class="gradient-text">Unforgettable</span></h2>
+    <p class="section-desc">Same powerful platform. Completely elevated experience. Every pixel reimagined for the next 500 million users.</p>
+  </div>
+  <div class="ba-container">
+    <!-- BEFORE -->
+    <div class="ba-card before">
+      <div class="ba-card-header">
+        <span class="ba-label old">Current</span>
+        <span style="font-size:11px;color:var(--text-tertiary)">2-column grid • static thumbnails</span>
+      </div>
+      <div class="ba-content">
+        <div class="ba-mockup old-design">
+          <div class="ba-old-header">
+            <span>🔶 शेयरचैट</span>
+            <span style="font-size:11px">🔍</span>
+          </div>
+          <div class="ba-old-content">
+            <div class="ba-old-post">
+              <div class="ba-old-tag">#शुभ_शुक्रवार</div>
+              <div class="ba-old-img"></div>
+              <div class="ba-old-actions">
+                <span>💚 शेयर</span>
+                <span>♡ लाइक</span>
+                <span>💬 कमेंट</span>
+              </div>
+            </div>
+            <div class="ba-old-post">
+              <div class="ba-old-tag">#गुड_मॉर्निंग</div>
+              <div class="ba-old-img"></div>
+              <div class="ba-old-actions">
+                <span>💚 शेयर</span>
+                <span>♡ लाइक</span>
+                <span>💬 कमेंट</span>
+              </div>
+            </div>
+          </div>
+          <div class="ba-old-nav">
+            <span>🏠 Home</span>
+            <span>🔍 Explore</span>
+            <span>📹 Video</span>
+            <span>👤 Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="ba-card" style="border-color: rgba(255,107,53,0.2);">
+      <div class="ba-card-header" style="background: rgba(255,107,53,0.05);">
+        <span class="ba-label new">Reimagined</span>
+        <span style="font-size:11px;color:var(--accent)">immersive • creator-first • global</span>
+      </div>
+      <div class="ba-content">
+        <div class="ba-mockup new-design" id="newMockup">
+          <!-- Mini Feed -->
+          <div style="padding: 40px 12px 8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <span style="font-family:'Space Grotesk';font-size:16px;font-weight:700;">Share<span style="color:var(--accent)">Chat</span></span>
+              <div style="display:flex;gap:10px;">
+                <div style="width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.3);position:relative;">
+                  <div style="position:absolute;top:-1px;right:-1px;width:5px;height:5px;background:var(--accent);border-radius:50%;"></div>
+                </div>
+                <div style="width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.3);"></div>
+              </div>
+            </div>
+            <!-- Stories -->
+            <div style="display:flex;gap:10px;margin-bottom:16px;overflow:hidden;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:44px;height:44px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;">+</div>
+                <span style="font-size:8px;color:var(--text-tertiary);">You</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:44px;height:44px;border-radius:50%;padding:2px;background:var(--gradient-1);">
+                  <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card);border:2px solid var(--bg-primary);display:flex;align-items:center;justify-content:center;font-size:18px;">🎭</div>
+                </div>
+                <span style="font-size:8px;color:var(--text-tertiary);">Priya</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:44px;height:44px;border-radius:50%;padding:2px;background:var(--gradient-3);">
+                  <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card);border:2px solid var(--bg-primary);display:flex;align-items:center;justify-content:center;font-size:18px;">🎵</div>
+                </div>
+                <span style="font-size:8px;color:var(--text-tertiary);">Raj</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:44px;height:44px;border-radius:50%;padding:2px;background:var(--gradient-gold);">
+                  <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card);border:2px solid var(--bg-primary);display:flex;align-items:center;justify-content:center;font-size:18px;">🏏</div>
+                </div>
+                <span style="font-size:8px;color:var(--text-tertiary);">Virat</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:44px;height:44px;border-radius:50%;padding:2px;background:var(--gradient-2);">
+                  <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card);border:2px solid var(--bg-primary);display:flex;align-items:center;justify-content:center;font-size:18px;">🎬</div>
+                </div>
+                <span style="font-size:8px;color:var(--text-tertiary);">Amit</span>
+              </div>
+            </div>
+            <!-- Post -->
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--gradient-2);display:flex;align-items:center;justify-content:center;font-size:12px;">🎤</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;">Neha Sharma</div>
+                  <div style="font-size:8px;color:var(--text-tertiary);">2h ago • Mumbai</div>
+                </div>
+                <span style="margin-left:auto;font-size:9px;color:var(--accent);border:1px solid var(--accent);padding:2px 8px;border-radius:100px;">Follow</span>
+              </div>
+              <div style="width:100%;aspect-ratio:4/5;border-radius:12px;background:linear-gradient(135deg,#1a0a2e,#0f172a,#0a192f);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 40%, rgba(255,107,53,0.15), transparent 50%), radial-gradient(circle at 70% 60%, rgba(120,75,160,0.15), transparent 50%);"></div>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                  <div style="width:0;height:0;border-left:12px solid white;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px;"></div>
+                </div>
+                <div style="position:absolute;bottom:10px;left:10px;right:10px;">
+                  <div style="display:inline-block;padding:3px 10px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border-radius:100px;font-size:9px;margin-bottom:4px;">#NightVibes 🌙</div>
+                  <div style="font-size:9px;color:rgba(255,255,255,0.6);">🎵 Arijit Singh — Tum Hi Ho</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:10px 4px;">
+                <span style="font-size:10px;color:var(--text-secondary);">❤️ 12.4K</span>
+                <span style="font-size:10px;color:var(--text-secondary);">💬 892</span>
+                <span style="font-size:10px;color:var(--text-secondary);">🔄 2.1K</span>
+                <span style="margin-left:auto;font-size:10px;color:var(--text-secondary);">🔖</span>
+              </div>
+            </div>
+          </div>
+          <!-- Nav Bar -->
+          <div style="position:sticky;bottom:0;background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid var(--border-glass);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:16px;">🏠</span>
+              <span style="font-size:7px;color:var(--accent);font-weight:600;">Home</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:16px;">🔍</span>
+              <span style="font-size:7px;color:var(--text-tertiary);">Discover</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <div style="width:36px;height:28px;border-radius:10px;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:300;color:white;box-shadow:0 4px 16px rgba(255,107,53,0.3);">+</div>
+              <span style="font-size:7px;color:var(--text-tertiary);">Create</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:16px;">💬</span>
+              <span style="font-size:7px;color:var(--text-tertiary);">Chat</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <span style="font-size:16px;">👤</span>
+              <span style="font-size:7px;color:var(--text-tertiary);">Profile</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHONE MOCKUPS -->
+<section class="phone-section">
+  <div class="section-header">
+    <div class="section-tag">Three Core Experiences</div>
+    <h2 class="section-title">Built for How <span class="gradient-text">India Scrolls</span></h2>
+    <p class="section-desc">Every screen designed to maximize creator expression, user delight, and time spent — while feeling unmistakably premium.</p>
+  </div>
+
+  <div class="phone-showcase">
+    <!-- PHONE 1: Feed -->
+    <div class="phone-frame floating" style="animation-delay: 0s;">
+      <div class="phone-notch"></div>
+      <div class="feed-screen">
+        <div class="feed-header">
+          <div class="feed-logo">Share<span>Chat</span></div>
+          <div class="feed-icons">
+            <div class="feed-icon notif"></div>
+            <div class="feed-icon"></div>
+          </div>
+        </div>
+        <div class="stories-bar">
+          <div class="story-item">
+            <div class="story-ring add"><span style="font-size:20px;color:var(--text-tertiary)">+</span></div>
+            <span class="story-name">You</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring"><div class="story-avatar">🎭</div></div>
+            <span class="story-name">Priya</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:var(--gradient-3)"><div class="story-avatar">🎵</div></div>
+            <span class="story-name">RajBeats</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:var(--gradient-gold)"><div class="story-avatar">🏏</div></div>
+            <span class="story-name">CricFan</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring"><div class="story-avatar">🎬</div></div>
+            <span class="story-name">Amit</span>
+          </div>
+        </div>
+        <div class="feed-post">
+          <div class="post-header">
+            <div class="post-avatar">🎤</div>
+            <div class="post-info">
+              <div class="post-name">Neha Sharma ✓</div>
+              <div class="post-time">2h ago · Mumbai</div>
+            </div>
+            <button class="post-follow">Follow</button>
+          </div>
+          <div class="post-media" style="background: linear-gradient(135deg, #1a0a2e, #0f172a, #0a192f);">
+            <div class="post-gradient"></div>
+            <div class="post-play"></div>
+            <div class="post-tag">#NightVibes 🌙</div>
+          </div>
+          <div class="post-actions">
+            <div class="post-action"><span>❤️</span> 12.4K</div>
+            <div class="post-action"><span>💬</span> 892</div>
+            <div class="post-action"><span>🔄</span> 2.1K</div>
+            <div class="post-action" style="margin-left:auto"><span>🔖</span></div>
+          </div>
+        </div>
+        <div class="feed-post">
+          <div class="post-header">
+            <div class="post-avatar" style="background:var(--gradient-3)">🎵</div>
+            <div class="post-info">
+              <div class="post-name">RajBeats</div>
+              <div class="post-time">4h ago · Delhi</div>
+            </div>
+            <button class="post-follow">Follow</button>
+          </div>
+          <div class="post-media" style="background: linear-gradient(135deg, #0a2a1a, #0f2a17, #1a3a0f);">
+            <div class="post-gradient"></div>
+            <div class="post-play"></div>
+            <div class="post-tag">#DesiBeat 🎶</div>
+          </div>
+          <div class="post-actions">
+            <div class="post-action"><span>❤️</span> 8.7K</div>
+            <div class="post-action"><span>💬</span> 341</div>
+            <div class="post-action"><span>🔄</span> 1.5K</div>
+            <div class="post-action" style="margin-left:auto"><span>🔖</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHONE 2: Reels -->
+    <div class="phone-frame floating" style="animation-delay: -2s;">
+      <div class="phone-notch"></div>
+      <div class="reels-screen">
+        <div class="reel-item" style="background: linear-gradient(135deg, #2a0a3a, #1a0525, #0a0a2a);">
+          <div class="reel-gradient"></div>
+          <div class="reel-content">
+            <div class="reel-creator">
+              <div class="reel-creator-avatar">🕺</div>
+              <span class="reel-creator-name">DanceMaster_IN</span>
+              <button class="follow-btn">Follow</button>
+            </div>
+            <div class="reel-desc">आज का सबसे viral dance step 🔥 Try करो और tag करो! #DanceChallenge #Trending</div>
+            <div class="reel-music">
+              <span class="music-note">♪</span> Badshah ft. Divine — Jugnu
+            </div>
+          </div>
+          <div class="reel-sidebar">
+            <div class="reel-sidebar-btn">
+              <div class="icon-circle">❤️</div>
+              <span class="count">45.2K</span>
+            </div>
+            <div class="reel-sidebar-btn">
+              <div class="icon-circle">💬</div>
+              <span class="count">1.2K</span>
+            </div>
+            <div class="reel-sidebar-btn">
+              <div class="icon-circle">🔄</div>
+              <span class="count">8.9K</span>
+            </div>
+            <div class="reel-sidebar-btn">
+              <div class="icon-circle">🔖</div>
+              <span class="count">Save</span>
+            </div>
+            <div class="reel-sidebar-btn">
+              <div class="icon-circle" style="background:var(--gradient-1);animation:spin 3s linear infinite;width:32px;height:32px;">🎵</div>
+            </div>
+          </div>
+          <div class="reel-progress">
+            <div class="reel-progress-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHONE 3: Discover -->
+    <div class="phone-frame floating" style="animation-delay: -4s;">
+      <div class="phone-notch"></div>
+      <div class="discover-screen">
+        <div class="discover-search">
+          🔍 Search creators, tags, sounds...
+        </div>
+        <div class="discover-chips">
+          <div class="chip active">For You</div>
+          <div class="chip">Trending 🔥</div>
+          <div class="chip">Music 🎵</div>
+          <div class="chip">Comedy 😂</div>
+          <div class="chip">Cricket 🏏</div>
+          <div class="chip">Devotional 🙏</div>
+        </div>
+        <div class="discover-grid">
+          <div class="discover-item featured" style="background: linear-gradient(135deg, #FF6B35, #FF3CAC);">
+            <div class="discover-item-overlay">
+              <div class="discover-item-views">▶ 2.4M views</div>
+            </div>
+          </div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #2B86C5, #784BA0);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #00F5A0, #00D9F5);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #F7971E, #FFD200);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #f093fb, #f5576c);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #4facfe, #00f2fe);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"></div>
+          <div class="discover-item" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-tag">What Changes</div>
+    <h2 class="section-title">Every Detail, <span class="gradient-text">Reimagined</span></h2>
+    <p class="section-desc">A complete UX overhaul across navigation, content consumption, creation, and monetization.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card glow-border">
+      <div class="feature-icon">📱</div>
+      <div class="feature-title">Vertical-First Video Feed</div>
+      <div class="feature-desc">TikTok-style scroll-snap video feed with full-screen immersive playback. Swipe up to discover, tap to engage — no clunky grid-to-player transitions. Pre-loaded next videos for zero-wait scrolling.</div>
+    </div>
+    <div class="feature-card glow-border">
+      <div class="feature-icon">🎨</div>
+      <div class="feature-title">Dark Mode Native Design</div>
+      <div class="feature-desc">A premium dark-first UI with glassmorphism, subtle gradients, and OLED-friendly blacks. Reduces eye strain, saves battery, and screams premium — exactly what Gen Z expects from a modern social app.</div>
+    </div>
+    <div class="feature-card glow-border">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Stories + Fleets Layer</div>
+      <div class="feature-desc">Ephemeral content at the top of every feed. Stories drive daily opens and creator-to-follower intimacy. Support for polls, Q&A, countdowns, and music stickers — all localized in 15+ languages.</div>
+    </div>
+    <div class="feature-card glow-border">
+      <div class="feature-icon">🧠</div>
+      <div class="feature-title">AI-Powered Discovery</div>
+      <div class="feature-desc">A "Discover" tab powered by collaborative filtering + content understanding. Personalized topic chips, trending sounds, creator spotlights, and a masonry grid that adapts to what you love.</div>
+    </div>
+    <div class="feature-card glow-border">
+      <div class="feature-icon">💰</div>
+      <div class="feature-title">Creator Economy Suite</div>
+      <div class="feature-desc">In-app tipping with UPI, virtual gifts during live streams, a creator dashboard with analytics, brand partnership marketplace, and revenue sharing — making ShareChat the place creators choose first.</div>
+    </div>
+    <div class="feature-card glow-border">
+      <div class="feature-icon">🌍</div>
+      <div class="feature-title">Seamless Multilingual UX</div>
+      <div class="feature-desc">Auto-detect language from content, not settings. Mixed-language feeds that feel natural. Transliteration support, voice-first search for non-keyboard users, and culturally adaptive UI components.</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison-section">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-tag">Competitive Edge</div>
+    <h2 class="section-title">How We <span class="gradient-text">Stack Up</span></h2>
+    <p class="section-desc">After the revamp, ShareChat won't just compete — it'll set the standard for vernacular social media globally.</p>
+  </div>
+  <div class="comparison-table">
+    <div class="comparison-row header">
+      <div class="comparison-cell header-cell">Feature</div>
+      <div class="comparison-cell header-cell" style="justify-content:center;">Current</div>
+      <div class="comparison-cell header-cell" style="justify-content:center;color:var(--accent);">Revamped</div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Full-screen vertical video feed</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Dark mode / OLED-friendly</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Stories with interactive stickers</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Scroll-snap video navigation</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">AI-powered personalized discovery</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span><span class="new-badge">NEW</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Creator monetization dashboard</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span><span class="new-badge">NEW</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">Glassmorphism + micro-animations</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="cross">✕</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">15+ Indic languages</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-cell feature-name">325M+ user base</div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+      <div class="comparison-cell" style="justify-content:center;"><span class="check">✓</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact-section" id="impact">
+  <div class="section-header" style="position:relative;">
+    <div class="section-tag">Projected Impact</div>
+    <h2 class="section-title">The Numbers That <span class="gradient-text">Matter</span></h2>
+    <p class="section-desc">Based on industry benchmarks from comparable UX transformations at social platforms globally.</p>
+  </div>
+  <div class="impact-metrics">
+    <div class="impact-metric">
+      <div class="impact-value">+40%</div>
+      <div class="impact-label">Daily Time Spent</div>
+      <div class="impact-sublabel">31 min → 43 min</div>
+    </div>
+    <div class="impact-metric">
+      <div class="impact-value">+65%</div>
+      <div class="impact-label">Video Completion Rate</div>
+      <div class="impact-sublabel">via scroll-snap + preload</div>
+    </div>
+    <div class="impact-metric">
+      <div class="impact-value">+25%</div>
+      <div class="impact-label">Creator Retention</div>
+      <div class="impact-sublabel">monetization + analytics</div>
+    </div>
+    <div class="impact-metric">
+      <div class="impact-value">2x</div>
+      <div class="impact-label">Ad Revenue Per User</div>
+      <div class="impact-sublabel">premium UX = premium CPMs</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-card">
+    <h2>Ready to Redefine<br>India's Social Experience?</h2>
+    <p>325 million users deserve a world-class platform. Let's build it together.</p>
+    <button class="btn-white">Start the Conversation →</button>
+  </div>
+</section>
+
+<div style="text-align:center;padding:40px 24px 60px;color:var(--text-tertiary);font-size:12px;">
+  Prepared for ShareChat Leadership · March 2026 · Confidential
+</div>
+
+<script>
+// Smooth reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature-card, .ba-card, .impact-metric, .comparison-table').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  observer.observe(el);
+});
+
+// Counter animation for stats
+function animateCounter(el, target, suffix = '') {
+  let current = 0;
+  const increment = target / 60;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current) + suffix;
+  }, 16);
+}
+
+// Trigger counter animation when impact section is visible
+const impactObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Animate counters
+      impactObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.impact-metric').forEach(el => {
+  impactObserver.observe(el);
+});
+
+// Nav background on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('.nav');
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(10,10,10,0.95)';
+  } else {
+    nav.style.background = 'rgba(10,10,10,0.8)';
+  }
+});
+</script>
+
+</body>
+</html>
