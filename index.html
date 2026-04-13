@@ -827,6 +827,121 @@ body {
 }
 .ba-mockup.new-design::-webkit-scrollbar { display: none; }
 
+/* ==================== MISSION STATEMENT ==================== */
+.mission-section {
+  padding: 120px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(255,107,53,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.mission-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.mission-quote {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 32px 0 28px;
+}
+
+.mission-quote .quote-mark {
+  font-size: 1.2em;
+  line-height: 0;
+  vertical-align: -0.2em;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-right: 2px;
+}
+
+.mission-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.mission-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  text-align: left;
+  margin-top: 64px;
+}
+
+.pillar-card {
+  padding: 36px 28px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card:hover {
+  border-color: rgba(255,107,53,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.pillar-card:nth-child(1)::before { background: var(--gradient-1); }
+.pillar-card:nth-child(2)::before { background: var(--gradient-3); }
+.pillar-card:nth-child(3)::before { background: var(--gradient-gold); }
+
+.pillar-card:hover::before { opacity: 1; }
+
+.pillar-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.pillar-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.pillar-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -865,6 +980,8 @@ body {
   .nav-links { display: none; }
   .ba-container { grid-template-columns: 1fr; }
   .impact-metrics { gap: 32px; }
+  .mission-pillars { grid-template-columns: 1fr; }
+  .mission-quote { font-size: clamp(24px, 7vw, 36px); }
 }
 
 /* Gradient accent borders for cards */
@@ -907,6 +1024,7 @@ body {
   </div>
   <div class="nav-links">
     <a href="#vision" class="nav-link active">Vision</a>
+    <a href="#mission" class="nav-link">Mission</a>
     <a href="#experience" class="nav-link">Experience</a>
     <a href="#features" class="nav-link">Features</a>
     <a href="#impact" class="nav-link">Impact</a>
@@ -945,6 +1063,40 @@ body {
       <div class="stat">
         <div class="stat-value">15+</div>
         <div class="stat-label">Languages</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION STATEMENT -->
+<section class="mission-section" id="mission">
+  <div class="mission-container">
+    <div class="section-tag" style="display:inline-block;">Our Mission</div>
+    <h2 class="mission-quote" style="animation: fadeUp 0.8s ease 0.1s both;">
+      <span class="quote-mark">"</span>Give every Indian creator<br>
+      a <span class="gradient-text">world-class stage</span> — in their own voice.
+    </h2>
+    <p class="mission-body" style="animation: fadeUp 0.8s ease 0.2s both;">
+      325 million users open ShareChat every month because it speaks to them — literally.
+      We're not here to clone the West. We're here to build the platform India deserves:
+      creator-first, culturally rooted, and globally ambitious.
+    </p>
+
+    <div class="mission-pillars">
+      <div class="pillar-card" style="animation: fadeUp 0.8s ease 0.3s both;">
+        <span class="pillar-icon">🎙️</span>
+        <div class="pillar-title">Creator First</div>
+        <div class="pillar-desc">80M+ creators deserve tools that amplify their voice — not bury it in engagement noise. Every design decision starts with "does this help creators thrive?"</div>
+      </div>
+      <div class="pillar-card" style="animation: fadeUp 0.8s ease 0.4s both;">
+        <span class="pillar-icon">🌏</span>
+        <div class="pillar-title">Culturally Rooted</div>
+        <div class="pillar-desc">With 15+ languages and content ranging from Bhojpuri comedy to Tamil devotionals, ShareChat celebrates the full spectrum of Indian expression.</div>
+      </div>
+      <div class="pillar-card" style="animation: fadeUp 0.8s ease 0.5s both;">
+        <span class="pillar-icon">🚀</span>
+        <div class="pillar-title">Globally Ambitious</div>
+        <div class="pillar-desc">Built for India. Ready for the world. The next billion internet users deserve a platform that sets the standard — not one that follows it.</div>
       </div>
     </div>
   </div>
