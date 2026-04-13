@@ -895,6 +895,191 @@ body {
   border-radius: 50%;
   border: 2px solid var(--bg-primary);
 }
+
+/* ==================== CONTACT FORM ==================== */
+.contact-section {
+  padding: 120px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.contact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: 56px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,107,53,0.08), transparent 70%);
+  pointer-events: none;
+}
+.contact-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+.contact-header .section-tag {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+.contact-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.contact-header p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.form-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+.form-field label .required-mark {
+  color: var(--accent);
+  margin-left: 2px;
+}
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  transition: var(--transition);
+  -webkit-appearance: none;
+}
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+.form-input:hover,
+.form-textarea:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.14);
+}
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.5;
+}
+.form-field.has-error .form-input,
+.form-field.has-error .form-textarea {
+  border-color: #FF4D6D;
+  box-shadow: 0 0 0 4px rgba(255,77,109,0.15);
+}
+.form-error {
+  font-size: 13px;
+  color: #FF8FA3;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+.form-field.has-error .form-error {
+  display: flex;
+}
+.form-error::before {
+  content: '⚠';
+  font-size: 12px;
+}
+
+.form-submit {
+  padding: 16px 32px;
+  border-radius: 100px;
+  border: none;
+  background: var(--gradient-1);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+  margin-top: 8px;
+  box-shadow: 0 8px 32px rgba(255,107,53,0.2);
+}
+.form-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255,107,53,0.35);
+}
+.form-submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-glow), 0 8px 32px rgba(255,107,53,0.2);
+}
+.form-submit:active {
+  transform: translateY(0);
+}
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-status {
+  min-height: 1.5em;
+  font-size: 14px;
+  text-align: center;
+  padding: 4px 0;
+}
+.form-status.success {
+  color: #00F5A0;
+}
+.form-status.error {
+  color: #FF8FA3;
+}
+
+/* Focus visibility for keyboard users on inputs */
+.form-input:focus-visible,
+.form-textarea:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .contact-section { padding: 80px 20px; }
+  .contact-card { padding: 40px 24px; }
+  .form-submit { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -910,6 +1095,7 @@ body {
     <a href="#experience" class="nav-link">Experience</a>
     <a href="#features" class="nav-link">Features</a>
     <a href="#impact" class="nav-link">Impact</a>
+    <a href="#contact" class="nav-link">Contact</a>
   </div>
   <button class="btn-primary" style="padding: 10px 24px; font-size: 13px;">Let's Build This</button>
 </nav>
@@ -1407,6 +1593,85 @@ body {
   </div>
 </section>
 
+<!-- CONTACT -->
+<section class="contact-section" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-card">
+    <div class="contact-header">
+      <div class="section-tag">Get in Touch</div>
+      <h2 id="contact-heading">Let's Start a <span class="gradient-text">Conversation</span></h2>
+      <p>Tell us about your vision — we'll get back to you within 48 hours.</p>
+    </div>
+
+    <form class="contact-form" id="contact-form" action="#" method="post" novalidate aria-describedby="form-status">
+      <div class="form-field" id="field-name">
+        <label for="contact-name">
+          Name<span class="required-mark" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="contact-name"
+          name="name"
+          class="form-input"
+          placeholder="Your full name"
+          autocomplete="name"
+          required
+          aria-required="true"
+          aria-invalid="false"
+          aria-describedby="error-name"
+        >
+        <span class="form-error" id="error-name" role="alert"></span>
+      </div>
+
+      <div class="form-field" id="field-email">
+        <label for="contact-email">
+          Email<span class="required-mark" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id="contact-email"
+          name="email"
+          class="form-input"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+          aria-required="true"
+          aria-invalid="false"
+          aria-describedby="error-email"
+        >
+        <span class="form-error" id="error-email" role="alert"></span>
+      </div>
+
+      <div class="form-field" id="field-message">
+        <label for="contact-message">
+          Message<span class="required-mark" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          class="form-textarea"
+          placeholder="Share your thoughts, questions, or ideas..."
+          rows="5"
+          required
+          aria-required="true"
+          aria-invalid="false"
+          aria-describedby="error-message"
+        ></textarea>
+        <span class="form-error" id="error-message" role="alert"></span>
+      </div>
+
+      <button type="submit" class="form-submit">Send Message →</button>
+
+      <div
+        class="form-status"
+        id="form-status"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+    </form>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section">
   <div class="cta-card">
@@ -1475,6 +1740,127 @@ window.addEventListener('scroll', () => {
     nav.style.background = 'rgba(10,10,10,0.8)';
   }
 });
+
+// ==================== CONTACT FORM VALIDATION ====================
+(function initContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  const status = document.getElementById('form-status');
+  const submitBtn = form.querySelector('.form-submit');
+
+  // RFC 5322-aligned pragmatic email regex. Not exhaustive, but matches
+  // the overwhelming majority of real-world addresses and rejects common typos.
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const MAX_MESSAGE_LENGTH = 5000;
+
+  const fields = [
+    {
+      input: document.getElementById('contact-name'),
+      errorEl: document.getElementById('error-name'),
+      wrapper: document.getElementById('field-name'),
+      validate: (v) => {
+        if (!v.trim()) return 'Please enter your name.';
+        if (v.trim().length < 2) return 'Name must be at least 2 characters.';
+        return '';
+      },
+    },
+    {
+      input: document.getElementById('contact-email'),
+      errorEl: document.getElementById('error-email'),
+      wrapper: document.getElementById('field-email'),
+      validate: (v) => {
+        const trimmed = v.trim();
+        if (!trimmed) return 'Please enter your email address.';
+        if (!EMAIL_REGEX.test(trimmed)) return 'Please enter a valid email address (e.g. you@example.com).';
+        return '';
+      },
+    },
+    {
+      input: document.getElementById('contact-message'),
+      errorEl: document.getElementById('error-message'),
+      wrapper: document.getElementById('field-message'),
+      validate: (v) => {
+        const trimmed = v.trim();
+        if (!trimmed) return 'Please enter a message.';
+        if (trimmed.length < 10) return 'Message should be at least 10 characters.';
+        if (trimmed.length > MAX_MESSAGE_LENGTH) return 'Message is too long (max ' + MAX_MESSAGE_LENGTH + ' characters).';
+        return '';
+      },
+    },
+  ];
+
+  function setFieldError(field, msg) {
+    if (msg) {
+      field.wrapper.classList.add('has-error');
+      field.input.setAttribute('aria-invalid', 'true');
+      field.errorEl.textContent = msg;
+    } else {
+      field.wrapper.classList.remove('has-error');
+      field.input.setAttribute('aria-invalid', 'false');
+      field.errorEl.textContent = '';
+    }
+  }
+
+  function validateField(field) {
+    const msg = field.validate(field.input.value);
+    setFieldError(field, msg);
+    return msg === '';
+  }
+
+  function setStatus(text, type) {
+    status.textContent = text;
+    status.classList.remove('success', 'error');
+    if (type) status.classList.add(type);
+  }
+
+  // Validate on blur (after user has touched the field)
+  fields.forEach((field) => {
+    field.input.addEventListener('blur', () => validateField(field));
+    // Clear errors as the user starts correcting
+    field.input.addEventListener('input', () => {
+      if (field.wrapper.classList.contains('has-error')) {
+        validateField(field);
+      }
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    setStatus('', null);
+
+    // Validate every field; collect first invalid for focus
+    let firstInvalid = null;
+    fields.forEach((field) => {
+      const ok = validateField(field);
+      if (!ok && !firstInvalid) firstInvalid = field;
+    });
+
+    if (firstInvalid) {
+      setStatus('Please fix the errors above and try again.', 'error');
+      firstInvalid.input.focus();
+      return;
+    }
+
+    // No backend — log to console per spec
+    const payload = {
+      name: fields[0].input.value.trim(),
+      email: fields[1].input.value.trim(),
+      message: fields[2].input.value.trim(),
+      submittedAt: new Date().toISOString(),
+    };
+    console.log('Contact form submission:', payload);
+
+    // Provide optimistic success feedback & reset
+    submitBtn.disabled = true;
+    setStatus('Thanks! Your message has been sent. We\u2019ll be in touch shortly.', 'success');
+    form.reset();
+    fields.forEach((f) => setFieldError(f, ''));
+
+    // Re-enable after a short pause so users can\u2019t double-submit instantly
+    setTimeout(() => { submitBtn.disabled = false; }, 1200);
+  });
+})();
 </script>
 
 </body>
