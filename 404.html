@@ -1,0 +1,261 @@
+<!--
+  HOSTING-LEVEL 404 WIRING:
+  This file is served automatically by static hosts when a route is not found.
+
+  GitHub Pages: Looks for 404.html in the repo root and serves it with 404 status code.
+  Netlify: Automatically serves public/404.html (or 404.html at root) for any 404 error.
+  Vercel: Same behavior — 404.html at root is served for missing routes.
+
+  No server configuration needed. This file is discovered and served by the platform.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShareChat — Page Not Found</title>
+  <meta name="description" content="Oops! The page you're looking for has disappeared from the feed. Let's get you back home.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: #1a1a1a;
+      --bg-glass: rgba(255,255,255,0.06);
+      --border-glass: rgba(255,255,255,0.08);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --accent: #FF6B35;
+      --accent-glow: rgba(255,107,53,0.3);
+      --gradient-1: linear-gradient(135deg, #FF6B35, #FF3CAC);
+      --radius-md: 16px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Animated background gradient */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.15), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(120,75,160,0.12), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 10% 60%, rgba(43,134,197,0.1), transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .error-code {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(96px, 20vw, 200px);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 16px;
+      letter-spacing: -0.05em;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: slideDown 0.7s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .error-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(24px, 5vw, 40px);
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      animation: slideDown 0.7s ease-out 0.1s both;
+    }
+
+    .error-subtext {
+      font-size: clamp(15px, 3vw, 18px);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 48px;
+      animation: slideDown 0.7s ease-out 0.2s both;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: slideDown 0.7s ease-out 0.3s both;
+    }
+
+    .btn-primary {
+      padding: 16px 36px;
+      border-radius: 100px;
+      border: none;
+      background: var(--gradient-1);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 32px rgba(255,107,53,0.25);
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(255,107,53,0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      padding: 16px 36px;
+      border-radius: 100px;
+      border: 1px solid var(--border-glass);
+      background: var(--bg-glass);
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(20px);
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+
+    /* Floating animation for small accent element */
+    .floating-icon {
+      position: absolute;
+      font-size: 48px;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .float-1 {
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .float-2 {
+      top: 15%;
+      right: 8%;
+      animation-delay: 2s;
+    }
+
+    .float-3 {
+      bottom: 10%;
+      left: 10%;
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+
+      .error-code {
+        margin-bottom: 12px;
+      }
+
+      .cta-group {
+        gap: 12px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 14px 28px;
+        font-size: 14px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+
+  <div class="floating-icon float-1">🔍</div>
+  <div class="floating-icon float-2">📱</div>
+  <div class="floating-icon float-3">🚀</div>
+
+  <div class="container">
+    <div class="error-code">404</div>
+    <h1 class="error-headline">We lost this page in the feed</h1>
+    <p class="error-subtext">
+      Looks like the page you're searching for has scrolled out of view or never existed. Don't worry, let's get you back on track!
+    </p>
+
+    <div class="cta-group">
+      <a href="./index.html" class="btn-primary">← Back to Home</a>
+      <a href="./feed.html" class="btn-secondary">Explore Feed →</a>
+    </div>
+  </div>
+</body>
+</html>
