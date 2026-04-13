@@ -1,0 +1,42 @@
+/* humanstxt.org */
+/* The humans responsible for ShareChat Revamp */
+
+
+/* TEAM */
+
+    Name: ShareChat Revamp Team
+    Role: Product Design & Engineering
+    Location: India
+
+    Name: Frontend Engineering
+    Role: UI Development & Component Build-out
+    Location: India
+
+    Name: Design Systems
+    Role: Design Tokens, Typography & Brand
+    Location: India
+
+
+/* THANKS */
+
+    Google Fonts — Inter & Space Grotesk typefaces
+    Pexels — royalty-free video assets used in feed prototype
+    humanstxt.org — humans.txt standard
+
+
+/* SITE */
+
+    Last update: 2026-04-14
+    Language: English
+    Doctype: HTML5
+    IDE: VS Code
+
+
+/* TECHNOLOGY */
+
+    HTML5
+    CSS3 (custom properties, dark theme only)
+    Vanilla JavaScript
+    Fonts: Space Grotesk (display), Inter (body)
+    Accent color: #FF6B35
+    Video source: Pexels 360p portrait streams
