@@ -1,0 +1,10 @@
+# Agent Task Context
+
+## Current Task: Survey backend layout and confirm router wiring conventions
+Complete all of the following in a single pass:
+
+1. **Survey backend layout and confirm router wiring conventions**: Read backend/ to identify: (a) Express app bootstrap file, (b) existing /v1 router (if any) and how routes are mounted, (c) existing route-handler file conventions (controller/router split, folder layout, module system CJS vs ESM), (d) jest config and test file location conventions. Produce a short findings note — no code.
+2. **Implement heartbeat route handler**: Create a handler at the location matched by ST-1 conventions (e.g. backend/src/routes/heartbeat.js or backend/routes/v1/heartbeat.js). Handler responds 200 with JSON { status: 'ok', uptimeSeconds: process.uptime(), timestamp: new Date().toISOString() }. No side effects, no external calls. Keep the handler pure enough to unit-test directly.
+3. **Wire handler into the /v1 Express router**: Register GET /heartbeat on the existing /v1 router so the full path is GET /v1/heartbeat. If no /v1 router exists, create one and mount it at app.use('/v1', v1Router) in the app bootstrap file. Do not modify unrelated routes.
+4. **Add Jest unit test for the heartbeat endpoint**: Write a Jest test colocated per ST-1 conventions (e.g. __tests__/heartbeat.test.js). Use supertest against the Express app (or the mini-router) to assert: (a) status 200, (b) content-type is application/json, (c) body.status === 'ok', (d) typeof body.uptimeSeconds === 'number' && body.uptimeSeconds >= 0, (e) body.timestamp parses as a valid ISO-8601 date. Add supertest to devDependencies only if not already present.
+5. **Verification**: Run `npm test` (or the repo's documented test command) from backend/. Confirm the new test passes and no existing tests regress. Manually curl GET /v1/heartbeat against a locally-started server and confirm the JSON contract.
